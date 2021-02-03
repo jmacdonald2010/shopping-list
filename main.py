@@ -59,3 +59,6 @@ conn.execute("INSERT INTO stores (store_name) VALUES ('kroger westerville'), ('c
 conn.execute("INSERT INTO departments (department_name) VALUES ('produce'), ('deli/bakery'), ('meat'), ('grocery'), ('beer/wine'), ('liquor'), ('dairy'), ('frozen'), ('pharmacy'), ('electronics'), ('other');")
 
 print('database initialized')
+
+# code to add item should be like
+# conn.execute(bananas.add_item())
