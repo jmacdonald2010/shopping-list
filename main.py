@@ -1,5 +1,31 @@
 from item import Item
 import sqlite3
+from kivy.app import App
+from kivy.uix.button import Button
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.screenmanager import ScreenManager, Screen
+
+# def the main kivy app
+
+class MainScreen(Screen):
+    pass
+
+class AddItems(Screen):
+    pass
+
+class MainApp(App):
+    def build(self):
+        # pass until this is built
+        main_layout = BoxLayout(orientation="vertical")
+        # this is me now largely testing how kivy works b/c i'm completely new to it
+        # not terribly likely to have a yeet button on the main branch
+        button = Button(text="yeet", size_hint=(.5, .5), pos_hint={'center_x': .5, 'center_y': .5}, background_color=[1,1,1,1])
+        button.bind(on_press=self.on_press_button)
+        main_layout.add_widget(button)
+        return main_layout
+
+    def on_press_button(self, instance):
+        print("yeeted")
 
 # connect to db, or create if not exists
 conn = sqlite3.connect('shoppingList.db')
@@ -62,3 +88,7 @@ print('database initialized')
 
 # code to add item should be like
 # conn.execute(bananas.add_item())
+
+if __name__ == '__main__':
+    app = MainApp()
+    app.run()

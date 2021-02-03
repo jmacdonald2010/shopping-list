@@ -1,5 +1,8 @@
 for commits to the in-progress branch
 
+02/02/2021 22:59
+last commit of the night. Working on building a multiscreen app using kivy. About to largely demolish the current MainApp class to accomdate the new multiscreen code, wanted to commit so it's not gone forever. Going to bed soon.
+
 02/02/2021 22:30
 add some methods to the item class. next version will be attempting to ingegrate kivy
 
