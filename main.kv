@@ -11,8 +11,8 @@
 
 <AddItems>
     BoxLayout:
-        Button:
-            text: 'Add Item'
+        <AddItemButton>:
+            size: (1, .5)
         Button:
             text: 'Back to Shopping List'
             on_press: root.manager.current = 'MainScreen'

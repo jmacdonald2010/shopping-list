@@ -2,34 +2,51 @@ from item import Item
 import sqlite3
 from kivy.app import App
 from kivy.uix.button import Button
+from kivy.uix.widget import Widget
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.lang import Builder
 
 # def the main kivy app
 
-# Builder.load_file('main.kv')
+Builder.load_file('main.kv')
 
 class MainScreen(Screen):
-    
-    def build(self):
+    pass
+    '''def build(self):
         layout = BoxLayout(orientation='vertical')
-        button = Button(text="Add Item", size=(1, .15), pos_hint={'center_x': .5, 'center_y': 1}, background_color=[0, 1, 0, 0])
+        button = Button(text="Add Item", size=(1, .15), pos_hint={'center_x': .5, 'center_y': 0.5}, background_color=[0, 1, 0, 1])
         button.bind(on_press=self.on_press_button)
         layout.add_widget(button)
 
     def on_press_button(self, instance):
-        root.manager.current = 'AddItems' # no idea if this will work
+        root.manager.current = 'AddItems' # no idea if this will work'''
+
+    '''def add_item_button_press(self, instance):
+        print("Item Added, written to DB")'''
 
 class AddItems(Screen):
-    def build(self):
+    pass
+    '''def build(self):
         layout = BoxLayout(orientation='vertical')
-        return_button = Button(text="Return to Shopping List", size =(1, .1), pos_hint={'center_x': .5, 'center_y': 1})
-        return_button.bind(self.return_button_press)
+        return_button = Button(text="Return to Shopping List", size =(1, .1), pos_hint={'center_x': .5, 'center_y': .5})
+        return_button.bind(on_press=self.return_button_press)
         layout.add_widget(return_button)
 
     def return_button_press(self, instance):
         root.manager.current = 'MainScreen'
+        '''
+
+class AddItemButton(Button):
+    def __init__(self, **kwargs):
+        super(AddItemButton, self).__init__(**kwargs)
+
+        button = Button(text="add item") # really too tired to write out the rest of the button for testing purposes
+        button.bind(on_press = self.callback)
+        self.add_widget(button)
+
+    def callback(self, instance):
+        print("Item Added! Wrote to DB!")
 
 
 class MainApp(App):
@@ -103,9 +120,9 @@ conn.execute('''CREATE TABLE IF NOT EXISTS items(
 # after creating the tables, populate the units, stores, and departments tables with ordinary information
 # users will be given the ability to add stores and departments, but not diff. units
 # starts w/ units, then stores, then departments
-conn.execute("INSERT INTO units (unit_name) VALUES ('each'), ('lbs'), ('oz'), ('mL'), ('L'), ('gallons');")
+'''conn.execute("INSERT INTO units (unit_name) VALUES ('each'), ('lbs'), ('oz'), ('mL'), ('L'), ('gallons');")
 conn.execute("INSERT INTO stores (store_name) VALUES ('kroger westerville'), ('costco easton'), ('costco polaris'), ('kroger stoneridge'), ('aldi westerville');")
-conn.execute("INSERT INTO departments (department_name) VALUES ('produce'), ('deli/bakery'), ('meat'), ('grocery'), ('beer/wine'), ('liquor'), ('dairy'), ('frozen'), ('pharmacy'), ('electronics'), ('other');")
+conn.execute("INSERT INTO departments (department_name) VALUES ('produce'), ('deli/bakery'), ('meat'), ('grocery'), ('beer/wine'), ('liquor'), ('dairy'), ('frozen'), ('pharmacy'), ('electronics'), ('other');")'''
 
 print('database initialized')
 
