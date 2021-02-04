@@ -1,5 +1,8 @@
 for commits to the in-progress branch
 
+02/03/2021 21:37
+Continued working w/ screen manager. Have buttons now. Next step is working on the add item page. Committing before breaking anything.
+
 02/03/2021 20:59
 Started working w/ kivy screen manager. Now it's time to figure out how to build a UI. Committing before I break anything as this works now as is.
 

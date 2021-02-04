@@ -8,30 +8,29 @@ from kivy.lang import Builder
 
 # def the main kivy app
 
-Builder.load_string('''
-<MainScreen>
-    BoxLayout:
-        Button:
-            text: 'Add Item'
-            on_press: root.manager.current = 'AddItems'
-        Button:
-            text: 'Remove Crossed-Out Items'
-
-<AddItems>
-    BoxLayout:
-        Button:
-            text: 'Add Item'
-        Button:
-            text: 'Back to Shopping List'
-            on_press: root.manager.current = 'MainScreen'
-        
-''')
+# Builder.load_file('main.kv')
 
 class MainScreen(Screen):
-    pass
+    
+    def build(self):
+        layout = BoxLayout(orientation='vertical')
+        button = Button(text="Add Item", size=(1, .15), pos_hint={'center_x': .5, 'center_y': 1}, background_color=[0, 1, 0, 0])
+        button.bind(on_press=self.on_press_button)
+        layout.add_widget(button)
+
+    def on_press_button(self, instance):
+        root.manager.current = 'AddItems' # no idea if this will work
 
 class AddItems(Screen):
-    pass
+    def build(self):
+        layout = BoxLayout(orientation='vertical')
+        return_button = Button(text="Return to Shopping List", size =(1, .1), pos_hint={'center_x': .5, 'center_y': 1})
+        return_button.bind(self.return_button_press)
+        layout.add_widget(return_button)
+
+    def return_button_press(self, instance):
+        root.manager.current = 'MainScreen'
+
 
 class MainApp(App):
     def build(self):

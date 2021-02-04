@@ -1,0 +1,18 @@
+<MainScreen>
+    BoxLayout:
+        orientation: 'vertical'
+        Button:
+            text: 'Add Item'
+            size_hint: (1, .15)
+            on_press: root.manager.current = 'AddItems'
+        Button:
+            text: 'Remove Crossed-Out Items'
+            size_hint: (1, .1)
+
+<AddItems>
+    BoxLayout:
+        Button:
+            text: 'Add Item'
+        Button:
+            text: 'Back to Shopping List'
+            on_press: root.manager.current = 'MainScreen'
