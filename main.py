@@ -4,8 +4,28 @@ from kivy.app import App
 from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.lang import Builder
 
 # def the main kivy app
+
+Builder.load_string('''
+<MainScreen>
+    BoxLayout:
+        Button:
+            text: 'Add Item'
+            on_press: root.manager.current = 'AddItems'
+        Button:
+            text: 'Remove Crossed-Out Items'
+
+<AddItems>
+    BoxLayout:
+        Button:
+            text: 'Add Item'
+        Button:
+            text: 'Back to Shopping List'
+            on_press: root.manager.current = 'MainScreen'
+        
+''')
 
 class MainScreen(Screen):
     pass
@@ -16,13 +36,17 @@ class AddItems(Screen):
 class MainApp(App):
     def build(self):
         # pass until this is built
-        main_layout = BoxLayout(orientation="vertical")
+        # main_layout = BoxLayout(orientation="vertical")
         # this is me now largely testing how kivy works b/c i'm completely new to it
         # not terribly likely to have a yeet button on the main branch
-        button = Button(text="yeet", size_hint=(.5, .5), pos_hint={'center_x': .5, 'center_y': .5}, background_color=[1,1,1,1])
+        '''button = Button(text="yeet", size_hint=(.5, .5), pos_hint={'center_x': .5, 'center_y': .5}, background_color=[1,1,1,1])
         button.bind(on_press=self.on_press_button)
-        main_layout.add_widget(button)
-        return main_layout
+        main_layout.add_widget(button)'''
+        # return main_layout
+        sm = ScreenManager()
+        sm.add_widget(MainScreen(name='MainScreen'))
+        sm.add_widget(AddItems(name='AddItems'))
+        return sm
 
     def on_press_button(self, instance):
         print("yeeted")

@@ -1,5 +1,8 @@
 for commits to the in-progress branch
 
+02/03/2021 20:59
+Started working w/ kivy screen manager. Now it's time to figure out how to build a UI. Committing before I break anything as this works now as is.
+
 02/02/2021 22:59
 last commit of the night. Working on building a multiscreen app using kivy. About to largely demolish the current MainApp class to accomdate the new multiscreen code, wanted to commit so it's not gone forever. Going to bed soon.
 
