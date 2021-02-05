@@ -1,5 +1,8 @@
 for commits to the in-progress branch
 
+02/03/2021 21:12
+Got the kivy button to do something w/ multiple screens! Pushing before I break it as I start to add more features.
+
 02/03/2021 23:10
 I thought things were working, but apparently I was wrong. Trying to implement buttons that do things w/ the .kv file, not quite sure how. Feel like it shouldn't be as complicated as everything I am reading is making it out to be. I want the add items button the on add items page to write some data to a DB. Nothing is really working at the moment but I'm going to bed now.
 

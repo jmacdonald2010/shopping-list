@@ -11,8 +11,10 @@
 
 <AddItems>
     BoxLayout:
-        <AddItemButton>:
+        Button:
+            text: '+ Add Item'
             size: (1, .5)
+            on_press: root.write_to_db()
         Button:
             text: 'Back to Shopping List'
             on_press: root.manager.current = 'MainScreen'

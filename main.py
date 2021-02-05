@@ -13,59 +13,20 @@ Builder.load_file('main.kv')
 
 class MainScreen(Screen):
     pass
-    '''def build(self):
-        layout = BoxLayout(orientation='vertical')
-        button = Button(text="Add Item", size=(1, .15), pos_hint={'center_x': .5, 'center_y': 0.5}, background_color=[0, 1, 0, 1])
-        button.bind(on_press=self.on_press_button)
-        layout.add_widget(button)
-
-    def on_press_button(self, instance):
-        root.manager.current = 'AddItems' # no idea if this will work'''
-
-    '''def add_item_button_press(self, instance):
-        print("Item Added, written to DB")'''
 
 class AddItems(Screen):
-    pass
-    '''def build(self):
-        layout = BoxLayout(orientation='vertical')
-        return_button = Button(text="Return to Shopping List", size =(1, .1), pos_hint={'center_x': .5, 'center_y': .5})
-        return_button.bind(on_press=self.return_button_press)
-        layout.add_widget(return_button)
-
-    def return_button_press(self, instance):
-        root.manager.current = 'MainScreen'
-        '''
-
-class AddItemButton(Button):
-    def __init__(self, **kwargs):
-        super(AddItemButton, self).__init__(**kwargs)
-
-        button = Button(text="add item") # really too tired to write out the rest of the button for testing purposes
-        button.bind(on_press = self.callback)
-        self.add_widget(button)
-
-    def callback(self, instance):
-        print("Item Added! Wrote to DB!")
-
+    def write_to_db(self, **kwargs):
+        # this may require some kind of an input to add the item to the db, but we'll get to that when we get there
+        # for now, let's just try to call this function from kv
+        print("This will eventually write to the db!")
 
 class MainApp(App):
     def build(self):
-        # pass until this is built
-        # main_layout = BoxLayout(orientation="vertical")
-        # this is me now largely testing how kivy works b/c i'm completely new to it
-        # not terribly likely to have a yeet button on the main branch
-        '''button = Button(text="yeet", size_hint=(.5, .5), pos_hint={'center_x': .5, 'center_y': .5}, background_color=[1,1,1,1])
-        button.bind(on_press=self.on_press_button)
-        main_layout.add_widget(button)'''
         # return main_layout
         sm = ScreenManager()
         sm.add_widget(MainScreen(name='MainScreen'))
         sm.add_widget(AddItems(name='AddItems'))
         return sm
-
-    def on_press_button(self, instance):
-        print("yeeted")
 
 # connect to db, or create if not exists
 conn = sqlite3.connect('shoppingList.db')
