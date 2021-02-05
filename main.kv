@@ -1,6 +1,6 @@
 <MainScreen>
     BoxLayout:
-        orientation: 'vertical'
+        orientation: 'horizontal'
         Button:
             text: 'Add Item'
             size_hint: (1, .15)
@@ -11,6 +11,7 @@
 
 <AddItems>
     BoxLayout:
+        orientation: 'horizontal'
         Button:
             text: '+ Add Item'
             size: (1, .5)
@@ -18,3 +19,8 @@
         Button:
             text: 'Back to Shopping List'
             on_press: root.manager.current = 'MainScreen'
+        TextInput:
+            id: 'Item'
+            multiline: False
+            text: 'Item'
+            on_text: root.new_item(self.text)

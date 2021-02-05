@@ -3,6 +3,7 @@ import sqlite3
 from kivy.app import App
 from kivy.uix.button import Button
 from kivy.uix.widget import Widget
+from kivy.uix.textinput import TextInput
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.lang import Builder
@@ -15,6 +16,10 @@ class MainScreen(Screen):
     pass
 
 class AddItems(Screen):
+    
+    def new_item(self, value):
+        print("Text input: ", value)
+
     def write_to_db(self, **kwargs):
         # this may require some kind of an input to add the item to the db, but we'll get to that when we get there
         # for now, let's just try to call this function from kv

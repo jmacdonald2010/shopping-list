@@ -1,6 +1,9 @@
 for commits to the in-progress branch
 
-02/03/2021 21:12
+02/04/2021 21:37
+Added a working text field. Well, it makes text appear in the console, so that's a start.
+
+02/04/2021 21:12
 Got the kivy button to do something w/ multiple screens! Pushing before I break it as I start to add more features.
 
 02/03/2021 23:10
