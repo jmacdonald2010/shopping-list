@@ -5,10 +5,12 @@ from kivy.uix.button import Button
 from kivy.uix.widget import Widget
 from kivy.uix.textinput import TextInput
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.dropdown import DropDown
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.lang import Builder
 
 # def the main kivy app
+# new_item = None
 
 Builder.load_file('main.kv')
 
@@ -17,13 +19,34 @@ class MainScreen(Screen):
 
 class AddItems(Screen):
     
-    def new_item(self, value):
-        print("Text input: ", value)
+    def add_new_item(self, value):
+        # creating a new object
+        global new_item
+        new_item = Item(value)
+        return new_item
+
+    def update_item_value(self, field, text):
+        try:
+            if field == 'Quantity':
+                new_item.quantity = text
+                print(new_item.quantity)
+            elif field == 'Unit':
+                new_item.quantity_unit = text # this will be its own unique challenge since I want to limit the options for units.
+            elif field == 'Department':
+                new_item.department = text
+            elif field == 'Isle':
+                new_item.isle = text
+            elif field == 'Store':
+                new_item.store = text # sim. to units, want limited options here.
+        except NameError:
+            print("Provide an Item name before entering other characteristics.")
+
 
     def write_to_db(self, **kwargs):
         # this may require some kind of an input to add the item to the db, but we'll get to that when we get there
         # for now, let's just try to call this function from kv
         print("This will eventually write to the db!")
+        print(new_item.name)
 
 class MainApp(App):
     def build(self):

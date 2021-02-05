@@ -1,5 +1,8 @@
 for commits to the in-progress branch
 
+02/04/2021 22:18
+Typing in an item name now creates a new item object, and then after that, you can assign other values to that object (eg, quantity). Next step is creating the dropdown lists for units and stores. Units could be a hard-coded list, but stores can't be per my design, so this will be a challenge.
+
 02/04/2021 21:37
 Added a working text field. Well, it makes text appear in the console, so that's a start.
 

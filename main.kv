@@ -22,5 +22,11 @@
         TextInput:
             id: 'Item'
             multiline: False
-            text: 'Item'
-            on_text: root.new_item(self.text)
+            hint_text: 'Item'
+            on_text: root.add_new_item(self.text)
+        TextInput:
+            id: 'Quantity'
+            multiline: False
+            hint_text: 'Quantity (default is 0)'
+            input_filter: 'float'
+            on_text: root.update_item_value('Quantity', self.text)

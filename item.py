@@ -2,13 +2,13 @@ import datetime
 
 class Item:
 
-    def __init__(self, name, quantity, quantity_unit, department, collected):
+    def __init__(self, name):
         # these are the required arguments; this will be largely mirrored in the DB
         self.name = name
-        self.quantity = quantity
-        self.quantity_unit = quantity_unit
-        self.department = department
-        self.collected = collected
+        self.quantity = 0 # these are the defaults to be updated in the main.py
+        self.quantity_unit = ""
+        self.department = ""
+        self.collected = False
         # optional ones
         self.isle = 0
         self.store = ""
