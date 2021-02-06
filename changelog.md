@@ -1,5 +1,8 @@
 for commits to the in-progress branch
 
+02/06/2021 09:54
+I figured out how to do the dropdown menu I want to! I have it working now. I'm not a big fan of the current layout so I'm likely to switch to either a grid layout or a float layout.
+
 02/05/2021 22:09
 No progress today. Trying to build a dropdown menu that has values from a database (list of units). Having absolutely no luck with this and unable to find anything useful online. Can't really make the input for w/ a normalized db w/o a dropdown list. 
 

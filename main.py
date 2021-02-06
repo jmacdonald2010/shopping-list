@@ -10,9 +10,6 @@ from kivy.uix.spinner import Spinner
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.lang import Builder
 
-# def the main kivy app
-# new_item = None
-
 # connect to db, or create if not exists
 conn = sqlite3.connect('shoppingList.db')
 
@@ -32,7 +29,6 @@ conn.execute('''CREATE TABLE IF NOT EXISTS departments(
     department_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     department_name TEXT NOT NULL
 );''')
-
 
 # create item table, foreign keys are quantity_unit, department, store
 # there may be an error w/ my sqllite commands here, but i am not sure, haven't run them yet
@@ -107,40 +103,25 @@ class AddItems(Screen):
         except NameError:
             print("Provide an Item name before entering other characteristics.")
 
-
     def write_to_db(self, **kwargs):
         # this may require some kind of an input to add the item to the db, but we'll get to that when we get there
         # for now, let's just try to call this function from kv
-        print("This will eventually write to the db!")
-        print(new_item.name)
+        try:
+            print("This will eventually write to the db!")
+            print(new_item.name)
+        except NameError:
+            print("Item name needs to be provided before adding item!")
 
     def get_units(self, **kwargs):
+        global units
         units = []
         cursor = conn.execute("SELECT unit_name FROM units;")
         for unit in cursor:
-            units.append(unit)
-        # now maybe format the needed text as a single string?
-        unit_string = ""
-        for i in range(0, len(units)):
-            unit_string = unit_string + "'" + units[i] + "'"
-            if i != len(units):
-                unit_string = unit_string + ", "
-        return unit_string
+            units.append(unit[0])
+        return units
 
-    '''class unitDropDown(DropDown):
-        # this doesn't work and I'm not sure how to create a dynamic dropdown w/ kivy while doing multiscreen in the kv file
-        def __init__(self):
-            super(unitDropDown, self).__init__(**kwargs)
-            units = conn.execute("SELECT unit_name FROM units;")
-            for unit in units:
-                button = Button(text=unit, height=.1)
-                button.bind(on_release=lambda button: self.select(button.text))
-                self.add_widget(button)
-            mainbutton = Button(text="Unit")
-            mainbutton.bind(on_release=unitDropDown.open)
-                # pass'''
-
-
+    def unit_spinner(self, text, **kwargs):
+        print(text)
 
 class MainApp(App):
     def build(self):
@@ -149,8 +130,6 @@ class MainApp(App):
         sm.add_widget(MainScreen(name='MainScreen'))
         sm.add_widget(AddItems(name='AddItems'))
         return sm
-
-
 
 # code to add item should be like
 # conn.execute(bananas.add_item())

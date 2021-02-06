@@ -31,7 +31,10 @@
             input_filter: 'float'
             on_text: root.update_item_value('Quantity', self.text)
         Spinner:
-            text: 'Unit'
+            size_hint: None, None
+            size: 100, 44
+            text: 'Units'
             values: root.get_units()
+            on_text: root.unit_spinner(self.text)
             
 
