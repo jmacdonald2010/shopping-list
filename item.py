@@ -23,3 +23,11 @@ class Item:
         # this is to be paired w/ a db update for the entry, update the entry's collected status to 1
         # when removing collected items in mass later, it will be a db delete where self.collected is 1
         self.collected = 1
+
+    def __str__(self):
+        print('Item: ', self.name)
+        print('Quantity: ', self.quantity, " ", self.quantity_unit)
+        print("Department: ", self.department)
+        print("Isle: ", self.isle)
+        print("Store: ", self.store)
+        print("Collected? ", self.collected)

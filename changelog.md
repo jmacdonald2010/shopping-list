@@ -1,5 +1,8 @@
 for commits to the in-progress branch
 
+02/06/2021 10:41
+Added the rest of the entry fields for the add item page. The formatting is not good, but I will change that once I get it writing to the database. Likely the last commit of the day.
+
 02/06/2021 09:54
 I figured out how to do the dropdown menu I want to! I have it working now. I'm not a big fan of the current layout so I'm likely to switch to either a grid layout or a float layout.
 

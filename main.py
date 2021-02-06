@@ -108,7 +108,8 @@ class AddItems(Screen):
         # for now, let's just try to call this function from kv
         try:
             print("This will eventually write to the db!")
-            print(new_item.name)
+            # I will uncomment this later once everything is in here, or add a try/except block first
+            # print(new_item) 
         except NameError:
             print("Item name needs to be provided before adding item!")
 
@@ -121,6 +122,31 @@ class AddItems(Screen):
         return units
 
     def unit_spinner(self, text, **kwargs):
+        try:
+            new_item.quantity_unit = text
+        except NameError:
+            print("Need to provide an item name first!")
+
+    def pop_department_spinner(self, **kwargs):
+        global departments
+        departments = []
+        cursor = conn.execute("SELECT department_name FROM departments;")
+        for department in cursor:
+            departments.append(department[0])
+        return departments
+
+    def department_spinner(self, text, **kwargs):
+        print(text)
+
+    def pop_store_spinner(self, **kwargs):
+        global stores
+        stores = []
+        cursor = conn.execute("SELECT store_name FROM stores;")
+        for store in cursor:
+            stores.append(store[0])
+        return stores
+        
+    def store_spinner(self, text, **kwargs):
         print(text)
 
 class MainApp(App):

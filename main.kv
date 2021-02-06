@@ -36,5 +36,22 @@
             text: 'Units'
             values: root.get_units()
             on_text: root.unit_spinner(self.text)
+        Spinner:
+            size_hint: None, None
+            size: 100, 44
+            text: 'Department'
+            values: root.pop_department_spinner()
+            on_text: root.department_spinner(self.text)
+        TextInput:
+            id: 'Isle'
+            multiline: False
+            hint_text: 'Isle'
+            on_text: root.update_item_value('Isle', self.text)
+        Spinner:
+            size_hint: None, None
+            size: 100, 44
+            text: 'Store'
+            values: root.pop_store_spinner()
+            on_text: root.store_spinner(self.text)
             
 
