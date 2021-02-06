@@ -30,3 +30,8 @@
             hint_text: 'Quantity (default is 0)'
             input_filter: 'float'
             on_text: root.update_item_value('Quantity', self.text)
+        Spinner:
+            text: 'Unit'
+            values: root.get_units()
+            
+
