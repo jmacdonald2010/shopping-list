@@ -93,13 +93,16 @@ class AddItems(Screen):
                 new_item.quantity = text
                 print(new_item.quantity)
             elif field == 'Unit':
-                new_item.quantity_unit = text # this will be its own unique challenge since I want to limit the options for units.
+                unit_id = units.index(text) + 1
+                new_item.quantity_unit = unit_id # this will be its own unique challenge since I want to limit the options for units.
             elif field == 'Department':
-                new_item.department = text
+                department_id = departments.index(text) + 1
+                new_item.department = department_id
             elif field == 'Isle':
                 new_item.isle = text
             elif field == 'Store':
-                new_item.store = text # sim. to units, want limited options here.
+                store_id = stores.index(text) + 1
+                new_item.store = store_id # sim. to units, want limited options here.
         except NameError:
             print("Provide an Item name before entering other characteristics.")
 

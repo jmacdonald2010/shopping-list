@@ -1,5 +1,8 @@
 for commits to the in-progress branch
 
+02/07/2021 10:50
+Fixed my normalization for writing to the items table. Next step, clearing the entry fields after adding an item.
+
 02/07/2021 10:37
 The app now writes to the db, now I am going to work on normalizing the foreign key fields in the items table
 
