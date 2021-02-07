@@ -1,5 +1,8 @@
 for commits to the in-progress branch
 
+02/07/2021 10:37
+The app now writes to the db, now I am going to work on normalizing the foreign key fields in the items table
+
 02/06/2021 10:41
 Added the rest of the entry fields for the add item page. The formatting is not good, but I will change that once I get it writing to the database. Likely the last commit of the day.
 

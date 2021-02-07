@@ -106,12 +106,13 @@ class AddItems(Screen):
     def write_to_db(self, **kwargs):
         # this may require some kind of an input to add the item to the db, but we'll get to that when we get there
         # for now, let's just try to call this function from kv
-        try:
-            print("This will eventually write to the db!")
-            # I will uncomment this later once everything is in here, or add a try/except block first
-            # print(new_item) 
-        except NameError:
-            print("Item name needs to be provided before adding item!")
+        # try:
+            # print("This will eventually write to the db!")
+        conn.execute(new_item.add_item())
+        conn.commit()
+        print('Added Item to DB')
+        # except NameError:
+            # print("Please ensure that all fields are completed prior to adding the item.")
 
     def get_units(self, **kwargs):
         global units
@@ -163,3 +164,4 @@ class MainApp(App):
 if __name__ == '__main__':
     app = MainApp()
     app.run()
+conn.close()

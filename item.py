@@ -16,7 +16,7 @@ class Item:
     def add_item(self):
         # returns the sqlite command as a string to populate the db w/ the item to add
         current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") # unsure if this will just output a current datetime string or not but its worth trying
-        db_query = f"INSERT INTO items (name, quantity, unit_id, department_id, isle, collected, store_id, time_created) VALUES ('{self.name}', {self.quantity}, '{self.quantity_unit}', {self.department}, {self.isle}, {self.collected}, {self.store_id}, '{current_time}');"
+        db_query = f"INSERT INTO items (name, quantity, unit_id, department_id, isle, collected, store_id, time_created) VALUES ('{self.name}', {self.quantity}, '{self.quantity_unit}', '{self.department}', '{self.isle}', '{self.collected}', '{self.store}', '{current_time}');"
         return db_query
 
     def item_collected(self):
