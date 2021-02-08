@@ -1,5 +1,8 @@
 for commits to the in-progress branch
 
+02/08/2021 14:13
+Started working on the main screen. Using a grid layout b/c it seems to be the easiest way to organize everything. Going to likely use accordian widgets to display the different departments.
+
 02/08/2021 13:47
 Cleaned up the code and tested it to make sure it all still works.
 
