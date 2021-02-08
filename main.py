@@ -32,7 +32,6 @@ conn.execute('''CREATE TABLE IF NOT EXISTS departments(
 );''')
 
 # create item table, foreign keys are quantity_unit, department, store
-# there may be an error w/ my sqllite commands here, but i am not sure, haven't run them yet
 conn.execute('''CREATE TABLE IF NOT EXISTS items(
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     name TEXT NOT NULL,
@@ -63,19 +62,15 @@ conn.execute('''CREATE TABLE IF NOT EXISTS items(
 # after creating the tables, populate the units, stores, and departments tables with ordinary information
 # users will be given the ability to add stores and departments, but not diff. units
 # starts w/ units, then stores, then departments
+# NOTE!!!! this needs to be made more robust 
+# this needs to be set so if those values are MISSING, it adds them, OTHERWISE, it does nothing
 '''conn.execute("INSERT INTO units (unit_name) VALUES ('each'), ('lbs'), ('oz'), ('mL'), ('L'), ('gallons');")
 conn.execute("INSERT INTO stores (store_name) VALUES ('kroger westerville'), ('costco easton'), ('costco polaris'), ('kroger stoneridge'), ('aldi westerville');")
 conn.execute("INSERT INTO departments (department_name) VALUES ('produce'), ('deli/bakery'), ('meat'), ('grocery'), ('beer/wine'), ('liquor'), ('dairy'), ('frozen'), ('pharmacy'), ('electronics'), ('other');")'''
 
 print('database initialized')
-'''units = []
-cursor = conn.execute("SELECT unit_name FROM units;")
-for unit in cursor:
-    units.append(unit)'''
 
-# get a list of units
-
-Builder.load_file('main.kv')
+Builder.load_file('main.kv') # i may not needs this line
 
 class MainScreen(Screen):
     pass
@@ -101,25 +96,16 @@ class AddItems(Screen):
                 new_item.quantity = text
                 print(new_item.quantity)
             elif field == 'Unit':
-                if text == "Units":
-                    print("Please select a valid unit")
-                else:
-                    unit_id = units.index(text)
-                    new_item.quantity_unit = unit_id # this will be its own unique challenge since I want to limit the options for units.
+                unit_id = units.index(text)
+                new_item.quantity_unit = unit_id 
             elif field == 'Department':
-                if text == "Departments":
-                    print("Please select a valid Department")
-                else:
-                    department_id = departments.index(text)
-                    new_item.department = department_id
+                department_id = departments.index(text)
+                new_item.department = department_id
             elif field == 'Isle':
                 new_item.isle = text
             elif field == 'Store':
-                if text == "Stores":
-                    print("Please select a valid Store")
-                else:
-                    store_id = stores.index(text)
-                    new_item.store = store_id # sim. to units, want limited options here.
+                store_id = stores.index(text)
+                new_item.store = store_id 
         except NameError:
             print("Provide an Item name before entering other characteristics.")
 
@@ -131,7 +117,7 @@ class AddItems(Screen):
                 conn.execute(new_item.add_item())
                 conn.commit()
                 print('Added Item to DB')
-                self.clear_inputs(['Item', 'Quantity', 'Isle'])
+                self.clear_inputs()
         except (NameError, sqlite3.OperationalError) as e:
             print("Please ensure that all fields are completed prior to adding the item.")
 
@@ -171,7 +157,7 @@ class AddItems(Screen):
     def store_spinner(self, text, **kwargs):
         print(text)
 
-    def clear_inputs(self, data):
+    def clear_inputs(self):
         self.item.text = ''
         self.quantity.text = ''
         self.isle.text = ''

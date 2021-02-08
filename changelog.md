@@ -1,5 +1,8 @@
 for commits to the in-progress branch
 
+02/08/2021 13:47
+Cleaned up the code and tested it to make sure it all still works.
+
 02/08/2021 13:40
 I made the code that writes to the database a bit more robust and added in some logic to help avoid errors or incomplete entries from being added to the database. Committing/pushing b/c I'm worried that when I go thru and clean up the code that I may break something.
 
