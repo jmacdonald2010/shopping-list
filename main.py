@@ -9,6 +9,7 @@ from kivy.uix.dropdown import DropDown
 from kivy.uix.spinner import Spinner
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.lang import Builder
+from kivy.properties import ObjectProperty
 
 # connect to db, or create if not exists
 conn = sqlite3.connect('shoppingList.db')
@@ -67,10 +68,10 @@ conn.execute("INSERT INTO stores (store_name) VALUES ('kroger westerville'), ('c
 conn.execute("INSERT INTO departments (department_name) VALUES ('produce'), ('deli/bakery'), ('meat'), ('grocery'), ('beer/wine'), ('liquor'), ('dairy'), ('frozen'), ('pharmacy'), ('electronics'), ('other');")'''
 
 print('database initialized')
-units = []
+'''units = []
 cursor = conn.execute("SELECT unit_name FROM units;")
 for unit in cursor:
-    units.append(unit)
+    units.append(unit)'''
 
 # get a list of units
 
@@ -80,6 +81,13 @@ class MainScreen(Screen):
     pass
 
 class AddItems(Screen):
+    # object properties not yet tested
+    unit = ObjectProperty(None)
+    store: ObjectProperty(None)
+    department: ObjectProperty(None)
+    item = ObjectProperty(None)
+    quantity = ObjectProperty(None)
+    isle = ObjectProperty(None)
 
     def add_new_item(self, value):
         # creating a new object
@@ -93,33 +101,43 @@ class AddItems(Screen):
                 new_item.quantity = text
                 print(new_item.quantity)
             elif field == 'Unit':
-                unit_id = units.index(text) + 1
-                new_item.quantity_unit = unit_id # this will be its own unique challenge since I want to limit the options for units.
+                if text == "Units":
+                    print("Please select a valid unit")
+                else:
+                    unit_id = units.index(text)
+                    new_item.quantity_unit = unit_id # this will be its own unique challenge since I want to limit the options for units.
             elif field == 'Department':
-                department_id = departments.index(text) + 1
-                new_item.department = department_id
+                if text == "Departments":
+                    print("Please select a valid Department")
+                else:
+                    department_id = departments.index(text)
+                    new_item.department = department_id
             elif field == 'Isle':
                 new_item.isle = text
             elif field == 'Store':
-                store_id = stores.index(text) + 1
-                new_item.store = store_id # sim. to units, want limited options here.
+                if text == "Stores":
+                    print("Please select a valid Store")
+                else:
+                    store_id = stores.index(text)
+                    new_item.store = store_id # sim. to units, want limited options here.
         except NameError:
             print("Provide an Item name before entering other characteristics.")
 
     def write_to_db(self, **kwargs):
-        # this may require some kind of an input to add the item to the db, but we'll get to that when we get there
-        # for now, let's just try to call this function from kv
-        # try:
-            # print("This will eventually write to the db!")
-        conn.execute(new_item.add_item())
-        conn.commit()
-        print('Added Item to DB')
-        # except NameError:
-            # print("Please ensure that all fields are completed prior to adding the item.")
+        try:
+            if (self.department.text == 'Departments') | (self.unit.text == 'Units') | (self.store.text == 'Stores') | (self.item.text == '') | (self.quantity.text == ''):
+                print('Please ensure that all fields are completed prior to adding the item.')
+            else:
+                conn.execute(new_item.add_item())
+                conn.commit()
+                print('Added Item to DB')
+                self.clear_inputs(['Item', 'Quantity', 'Isle'])
+        except (NameError, sqlite3.OperationalError) as e:
+            print("Please ensure that all fields are completed prior to adding the item.")
 
     def get_units(self, **kwargs):
         global units
-        units = []
+        units = ["Units"]
         cursor = conn.execute("SELECT unit_name FROM units;")
         for unit in cursor:
             units.append(unit[0])
@@ -133,7 +151,7 @@ class AddItems(Screen):
 
     def pop_department_spinner(self, **kwargs):
         global departments
-        departments = []
+        departments = ["Departments"]
         cursor = conn.execute("SELECT department_name FROM departments;")
         for department in cursor:
             departments.append(department[0])
@@ -144,7 +162,7 @@ class AddItems(Screen):
 
     def pop_store_spinner(self, **kwargs):
         global stores
-        stores = []
+        stores = ["Stores"]
         cursor = conn.execute("SELECT store_name FROM stores;")
         for store in cursor:
             stores.append(store[0])
@@ -152,6 +170,15 @@ class AddItems(Screen):
         
     def store_spinner(self, text, **kwargs):
         print(text)
+
+    def clear_inputs(self, data):
+        self.item.text = ''
+        self.quantity.text = ''
+        self.isle.text = ''
+        self.unit.text = "Units"
+        self.department.text = "Departments"
+        self.store.text = "Stores"
+            
 
 class MainApp(App):
     def build(self):

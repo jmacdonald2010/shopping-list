@@ -10,44 +10,54 @@
             size_hint: (1, .1)
 
 <AddItems>
+    unit: Unit
+    department: Department
+    store: Store
+    item: Item
+    quantity: Quantity
+    isle: Isle
     BoxLayout:
         orientation: 'horizontal'
         Button:
             text: '+ Add Item'
             size: (1, .5)
             on_press: root.write_to_db()
+            # on_release: root.clear_inputs([Item, Quantity, Isle])
         Button:
             text: 'Back to Shopping List'
             on_press: root.manager.current = 'MainScreen'
         TextInput:
-            id: 'Item'
+            id: Item
             multiline: False
             hint_text: 'Item'
             on_text: root.add_new_item(self.text)
         TextInput:
-            id: 'Quantity'
+            id: Quantity
             multiline: False
             hint_text: 'Quantity (default is 0)'
             input_filter: 'float'
             on_text: root.update_item_value('Quantity', self.text)
         Spinner:
+            id: Unit
             size_hint: None, None
             size: 100, 44
             text: 'Units'
             values: root.get_units()
             on_text: root.update_item_value('Unit', self.text)
         Spinner:
+            id: Department
             size_hint: None, None
             size: 100, 44
             text: 'Department'
             values: root.pop_department_spinner()
             on_text: root.update_item_value('Department', self.text)
         TextInput:
-            id: 'Isle'
+            id: Isle
             multiline: False
             hint_text: 'Isle'
             on_text: root.update_item_value('Isle', self.text)
         Spinner:
+            id: Store
             size_hint: None, None
             size: 100, 44
             text: 'Store'

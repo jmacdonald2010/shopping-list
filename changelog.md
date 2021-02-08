@@ -1,5 +1,8 @@
 for commits to the in-progress branch
 
+02/08/2021 13:40
+I made the code that writes to the database a bit more robust and added in some logic to help avoid errors or incomplete entries from being added to the database. Committing/pushing b/c I'm worried that when I go thru and clean up the code that I may break something.
+
 02/07/2021 10:50
 Fixed my normalization for writing to the items table. Next step, clearing the entry fields after adding an item.
 
