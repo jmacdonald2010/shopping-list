@@ -1,5 +1,8 @@
 for commits to the in-progress branch
 
+02/08/2021 20:26
+Working on the scrollview for the accordion menus. They scroll, but the actual accordion action is pretty messed up. Suspecting it may be a backgrounds issue, but we'll have to see when I investigate it further. 
+
 02/08/2021 19:36
 I have added the accordian menus to the main page, but they are formatting poorly. I am attempting to implement a scroll view w/o much success. This commit/push is to save myself before I break it real bad.
 
