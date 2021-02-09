@@ -1,5 +1,8 @@
 for commits to the in-progress branch
 
+02/08/2021 19:36
+I have added the accordian menus to the main page, but they are formatting poorly. I am attempting to implement a scroll view w/o much success. This commit/push is to save myself before I break it real bad.
+
 02/08/2021 14:13
 Started working on the main screen. Using a grid layout b/c it seems to be the easiest way to organize everything. Going to likely use accordian widgets to display the different departments.
 

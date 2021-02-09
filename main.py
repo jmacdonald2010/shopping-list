@@ -1,6 +1,6 @@
 from item import Item
 import sqlite3
-from kivy.app import App
+from kivy.app import App, runTouchApp
 from kivy.uix.button import Button
 from kivy.uix.widget import Widget
 from kivy.uix.textinput import TextInput
@@ -9,7 +9,11 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.dropdown import DropDown
 from kivy.uix.spinner import Spinner
+from kivy.uix.accordion import Accordion, AccordionItem
+from kivy.uix.checkbox import CheckBox
 from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.uix.scrollview import ScrollView
+from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.properties import ObjectProperty
 
@@ -74,8 +78,10 @@ print('database initialized')
 
 Builder.load_file('main.kv') # i may not needs this line
 
-class MainScreen(Screen):
-    pass
+class MainScreen(Screen, GridLayout):
+    
+    def __init__(self, **kwargs):
+        super(MainScreen, self).__init__(**kwargs)
 
 class AddItems(Screen):
     # object properties not yet tested
@@ -178,6 +184,8 @@ class MainApp(App):
 
 # code to add item should be like
 # conn.execute(bananas.add_item())
+
+# runTouchApp(MainApp)
 
 if __name__ == '__main__':
     app = MainApp()
