@@ -1,5 +1,8 @@
 for commits to the in-progress branch
 
+02/09/2021 22:50
+Fixed my overlapping accordion menus issue by commenting out the builder line. Next step is figuring out how to get the data to display in the accordions w/ varying #'s of rows
+
 02/08/2021 20:26
 Working on the scrollview for the accordion menus. They scroll, but the actual accordion action is pretty messed up. Suspecting it may be a backgrounds issue, but we'll have to see when I investigate it further. 
 

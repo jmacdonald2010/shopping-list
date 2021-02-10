@@ -76,7 +76,7 @@ conn.execute("INSERT INTO departments (department_name) VALUES ('produce'), ('de
 
 print('database initialized')
 
-Builder.load_file('main.kv') # i may not needs this line
+# Builder.load_file('main.kv') # i may not needs this line
 
 class MainScreen(Screen, GridLayout):
     
