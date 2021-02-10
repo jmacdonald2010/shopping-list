@@ -1,5 +1,8 @@
 for commits to the in-progress branch
 
+02/09/2021 23:30
+working on importing the data from the database into pandas dataframes so as to more easily store them in the tables that will be assembled in the accordion items. Final commit/push for the night.
+
 02/09/2021 23:11
 Added a lot of ObjectProperties for the main screen class, committing/pushing b/c I know something is going to break when I try to make these tables for the accordionItems.
 

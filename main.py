@@ -16,6 +16,8 @@ from kivy.uix.scrollview import ScrollView
 from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.properties import ObjectProperty
+import pandas as pd
+import numpy as np
 
 # connect to db, or create if not exists
 conn = sqlite3.connect('shoppingList.db')
@@ -94,6 +96,15 @@ class MainScreen(Screen, GridLayout):
 
     def __init__(self, **kwargs):
         super(MainScreen, self).__init__(**kwargs)
+
+        # load the data into the accordionItem tables
+        # first, load all of the data
+        # first, create a produce df
+        # NOTE something I worry about here is if these dataframes will get actively updated when I add items from the other screen.
+        self.produce_df = pd.read_sql('SELECT name, quantity, unit_id, isle, collected, store_id FROM items WHERE department_id = 1;', conn, index_col='name')
+        print(self.produce_df)
+        self.deli_bakery_df = pd.read_sql('SELECT name, quantity, unit_id, isle, collected, store_id FROM items WHERE department_id = 2;', conn, index_col='name')
+        print(self.deli_bakery_df)
 
 
 
