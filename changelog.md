@@ -1,5 +1,8 @@
 for commits to the in-progress branch
 
+02/09/2021 23:11
+Added a lot of ObjectProperties for the main screen class, committing/pushing b/c I know something is going to break when I try to make these tables for the accordionItems.
+
 02/09/2021 22:50
 Fixed my overlapping accordion menus issue by commenting out the builder line. Next step is figuring out how to get the data to display in the accordions w/ varying #'s of rows
 

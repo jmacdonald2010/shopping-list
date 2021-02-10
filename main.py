@@ -80,8 +80,22 @@ print('database initialized')
 
 class MainScreen(Screen, GridLayout):
     
+    produce_table = ObjectProperty(None)
+    deli_bakery_table = ObjectProperty(None)
+    meat_table = ObjectProperty(None)
+    grocery_table = ObjectProperty(None)
+    beer_wine_table = ObjectProperty(None)
+    liquor_table = ObjectProperty(None)
+    dairy_table = ObjectProperty(None)
+    frozen_table = ObjectProperty(None)
+    pharmacy_table = ObjectProperty(None)
+    electronics_table = ObjectProperty(None)
+    other_table = ObjectProperty(None)
+
     def __init__(self, **kwargs):
         super(MainScreen, self).__init__(**kwargs)
+
+
 
 class AddItems(Screen):
     # object properties not yet tested

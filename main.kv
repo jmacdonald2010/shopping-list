@@ -1,4 +1,15 @@
 <MainScreen>
+    produce_table: produce_table
+    deli_bakery_table: deli_bakery_table
+    meat_table: meat_table
+    grocery_table: grocery_table
+    beer_wine_table: beer_wine_table
+    liquor_table: liquor_table
+    dairy_table: dairy_table
+    frozen_table: frozen_table
+    pharmacy_table: pharmacy_table
+    electronics_table: electronics_table
+    other_table: other_table
     #do_scroll_x: False
     #do_scroll_y: True
     # size_hint: (None, 1)
@@ -36,6 +47,7 @@
                     AccordionItem:
                         orientation: 'vertical'
                         title: 'Produce'
+                        id: produce_table
                         GridLayout:
                             cols: 5
                             collapse: True
@@ -52,6 +64,7 @@
                     AccordionItem:
                         orientation: 'vertical'
                         title: 'Deli/Bakery'
+                        id: deli_bakery_table
                         GridLayout:
                             cols: 5
                             collapse: True
@@ -68,6 +81,7 @@
                     AccordionItem:
                         orientation: 'vertical'
                         title: 'Meat'
+                        id: meat_table
                         GridLayout:
                             cols: 5
                             collapse: True
@@ -84,6 +98,7 @@
                     AccordionItem:
                         orientation: 'vertical'
                         title: 'grocery'
+                        id: grocery_table
                         GridLayout:
                             cols: 5
                             collapse: True
@@ -100,6 +115,7 @@
                     AccordionItem:
                         orientation: 'vertical'
                         title: 'Beer/Wine'
+                        id: beer_wine_table
                         GridLayout:
                             cols: 5
                             collapse: True
@@ -116,6 +132,7 @@
                     AccordionItem:
                         orientation: 'vertical'
                         title: 'Liquor'
+                        id: liquor_table
                         GridLayout:
                             cols: 5
                             collapse: True
@@ -132,6 +149,7 @@
                     AccordionItem:
                         orientation: 'vertical'
                         title: 'Dairy'
+                        id: dairy_table
                         GridLayout:
                             cols: 5
                             collapse: True
@@ -148,6 +166,7 @@
                     AccordionItem:
                         orientation: 'vertical'
                         title: 'Frozen'
+                        id: frozen_table
                         GridLayout:
                             cols: 5
                             collapse: True
@@ -160,10 +179,28 @@
                             Label:
                                 text: 'Unit'
                             Label:
-                                text: 'Isle'    
+                                text: 'Isle'   
+                    AccordionItem:
+                        orientation: 'vertical'
+                        title: 'Pharmacy'
+                        id: pharmacy_table
+                        GridLayout:
+                            cols: 5
+                            collapse: True
+                            Label:
+                                text: 'checkbox goes here'
+                            Label:
+                                text: 'Item'
+                            Label:
+                                text: 'Amt'
+                            Label:
+                                text: 'Unit'
+                            Label:
+                                text: 'Isle' 
                     AccordionItem:
                         orientation: 'vertical'
                         title: 'Electronics'
+                        id: electronics_table
                         GridLayout:
                             cols: 5
                             collapse: True
@@ -180,6 +217,7 @@
                     AccordionItem:
                         orientation: 'vertical'
                         title: 'Other'
+                        id: other_table
                         GridLayout:
                             cols: 5
                             collapse: True
