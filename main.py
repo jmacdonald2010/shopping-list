@@ -11,6 +11,8 @@ from kivy.uix.dropdown import DropDown
 from kivy.uix.spinner import Spinner
 from kivy.uix.accordion import Accordion, AccordionItem
 from kivy.uix.checkbox import CheckBox
+from kivy.uix.togglebutton import ToggleButton
+from kivy.uix.label import Label
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.scrollview import ScrollView
 from kivy.core.window import Window
@@ -83,16 +85,27 @@ print('database initialized')
 class MainScreen(Screen, GridLayout):
     
     produce_table = ObjectProperty(None)
+    produce_grid = ObjectProperty(None)
     deli_bakery_table = ObjectProperty(None)
+    deli_bakery_grid = ObjectProperty(None)
     meat_table = ObjectProperty(None)
+    meat_grid = ObjectProperty(None)
     grocery_table = ObjectProperty(None)
+    grocery_grid = ObjectProperty(None)
     beer_wine_table = ObjectProperty(None)
+    beer_wine_grid = ObjectProperty(None)
     liquor_table = ObjectProperty(None)
+    liquor_grid = ObjectProperty(None)
     dairy_table = ObjectProperty(None)
+    dairy_grid = ObjectProperty(None)
     frozen_table = ObjectProperty(None)
+    frozen_grid = ObjectProperty(None)
     pharmacy_table = ObjectProperty(None)
+    pharmacy_grid = ObjectProperty(None)
     electronics_table = ObjectProperty(None)
+    electronics_grid = ObjectProperty(None)
     other_table = ObjectProperty(None)
+    other_grid = ObjectProperty(None)
 
     def __init__(self, **kwargs):
         super(MainScreen, self).__init__(**kwargs)
@@ -101,12 +114,127 @@ class MainScreen(Screen, GridLayout):
         # first, load all of the data
         # first, create a produce df
         # NOTE something I worry about here is if these dataframes will get actively updated when I add items from the other screen.
-        self.produce_df = pd.read_sql('SELECT name, quantity, unit_id, isle, collected, store_id FROM items WHERE department_id = 1;', conn, index_col='name')
-        print(self.produce_df)
-        self.deli_bakery_df = pd.read_sql('SELECT name, quantity, unit_id, isle, collected, store_id FROM items WHERE department_id = 2;', conn, index_col='name')
-        print(self.deli_bakery_df)
+        # I think it may also be easier to do join statements to populate the actual department names, unit names, store names, etc.
+        self.produce_df = pd.read_sql('SELECT name, quantity, unit_id, isle, collected, store_id, id, time_created FROM items WHERE department_id = 1;', conn, index_col='name')
+        # print(self.produce_df)
+        self.deli_bakery_df = pd.read_sql('SELECT name, quantity, unit_id, isle, collected, store_id, id FROM items WHERE department_id = 2;', conn, index_col='name')
+        # print(self.deli_bakery_df)
+        self.meat_df = pd.read_sql('SELECT name, quantity, unit_id, isle, collected, store_id, id FROM items WHERE department_id = 3;', conn, index_col='name')
+        self.grocery_df = pd.read_sql('SELECT name, quantity, unit_id, isle, collected, store_id, id FROM items WHERE department_id = 4;', conn, index_col='name')
+        self.beer_wine_df = pd.read_sql('SELECT name, quantity, unit_id, isle, collected, store_id, id FROM items WHERE department_id = 5;', conn, index_col='name')
+        self.liquor_df = pd.read_sql('SELECT name, quantity, unit_id, isle, collected, store_id, id FROM items WHERE department_id = 6;', conn, index_col='name')
+        self.dairy_df = pd.read_sql('SELECT name, quantity, unit_id, isle, collected, store_id, id FROM items WHERE department_id = 7;', conn, index_col='name')
+        self.frozen_df = pd.read_sql('SELECT name, quantity, unit_id, isle, collected, store_id, id FROM items WHERE department_id = 8;', conn, index_col='name')
+        self.pharmacy_df = pd.read_sql('SELECT name, quantity, unit_id, isle, collected, store_id, id FROM items WHERE department_id = 9;', conn, index_col='name')
+        self.electronics_df = pd.read_sql('SELECT name, quantity, unit_id, isle, collected, store_id, id FROM items WHERE department_id = 10;', conn, index_col='name')
+        self.other_df = pd.read_sql('SELECT name, quantity, unit_id, isle, collected, store_id, id FROM items WHERE department_id = 11;', conn, index_col='name')
 
+        # first, I think I need to set the grid layout from within here
+        # self.produce_table = GridLayout(cols=5)
 
+        # attempt to create the contents of the accordion item here and not in kv b/c it's dynamic
+        # build produce accordion contents
+        self.produce_grid.add_widget(Label(text='Collected?')) # blank b/c checkbox
+        self.produce_grid.add_widget(Label(text='Item'))
+        self.produce_grid.add_widget(Label(text='Amt'))
+        self.produce_grid.add_widget(Label(text='Unit'))
+        self.produce_grid.add_widget(Label(text='Isle'))
+        self.produce_grid.add_widget(Label(text='DateTime Added'))
+
+        for row in self.produce_df.itertuples():
+            self.produce_grid.add_widget(ToggleButton(state=self.check_toggle_state(row[4], row[6]), on_press=self.change_toggle_state(row[4], row[6])))
+            self.produce_grid.add_widget(Label(text=str(row[0])))
+            self.produce_grid.add_widget(Label(text=str(row[1])))
+            self.produce_grid.add_widget(Label(text=str(row[2])))
+            self.produce_grid.add_widget(Label(text=str(row[3])))
+            self.produce_grid.add_widget(Label(text=str(row[7])))
+            
+            # pass
+
+        self.deli_bakery_table.add_widget(Label(text='')) # blank b/c checkbox
+        self.deli_bakery_table.add_widget(Label(text='Item'))
+        self.deli_bakery_table.add_widget(Label(text='Amt'))
+        self.deli_bakery_table.add_widget(Label(text='Unit'))
+        self.deli_bakery_table.add_widget(Label(text='Isle'))        
+        
+        self.meat_table.add_widget(Label(text='')) # blank b/c checkbox
+        self.meat_table.add_widget(Label(text='Item'))
+        self.meat_table.add_widget(Label(text='Amt'))
+        self.meat_table.add_widget(Label(text='Unit'))
+        self.meat_table.add_widget(Label(text='Isle'))
+
+        self.grocery_table.add_widget(Label(text='')) # blank b/c checkbox
+        self.grocery_table.add_widget(Label(text='Item'))
+        self.grocery_table.add_widget(Label(text='Amt'))
+        self.grocery_table.add_widget(Label(text='Unit'))
+        self.grocery_table.add_widget(Label(text='Isle'))
+
+        self.beer_wine_table.add_widget(Label(text='')) # blank b/c checkbox
+        self.beer_wine_table.add_widget(Label(text='Item'))
+        self.beer_wine_table.add_widget(Label(text='Amt'))
+        self.beer_wine_table.add_widget(Label(text='Unit'))
+        self.beer_wine_table.add_widget(Label(text='Isle'))
+
+        self.liquor_table.add_widget(Label(text='')) # blank b/c checkbox
+        self.liquor_table.add_widget(Label(text='Item'))
+        self.liquor_table.add_widget(Label(text='Amt'))
+        self.liquor_table.add_widget(Label(text='Unit'))
+        self.liquor_table.add_widget(Label(text='Isle'))
+
+        self.dairy_table.add_widget(Label(text='')) # blank b/c checkbox
+        self.dairy_table.add_widget(Label(text='Item'))
+        self.dairy_table.add_widget(Label(text='Amt'))
+        self.dairy_table.add_widget(Label(text='Unit'))
+        self.dairy_table.add_widget(Label(text='Isle'))
+
+        self.frozen_table.add_widget(Label(text='')) # blank b/c checkbox
+        self.frozen_table.add_widget(Label(text='Item'))
+        self.frozen_table.add_widget(Label(text='Amt'))
+        self.frozen_table.add_widget(Label(text='Unit'))
+        self.frozen_table.add_widget(Label(text='Isle'))
+
+        self.pharmacy_table.add_widget(Label(text='')) # blank b/c checkbox
+        self.pharmacy_table.add_widget(Label(text='Item'))
+        self.pharmacy_table.add_widget(Label(text='Amt'))
+        self.pharmacy_table.add_widget(Label(text='Unit'))
+        self.pharmacy_table.add_widget(Label(text='Isle'))
+
+        self.electronics_table.add_widget(Label(text='')) # blank b/c checkbox
+        self.electronics_table.add_widget(Label(text='Item'))
+        self.electronics_table.add_widget(Label(text='Amt'))
+        self.electronics_table.add_widget(Label(text='Unit'))
+        self.electronics_table.add_widget(Label(text='Isle'))
+
+        self.other_table.add_widget(Label(text='')) # blank b/c checkbox
+        self.other_table.add_widget(Label(text='Item'))
+        self.other_table.add_widget(Label(text='Amt'))
+        self.other_table.add_widget(Label(text='Unit'))
+        self.other_table.add_widget(Label(text='Isle'))
+
+    def check_toggle_state(self, state, id, **kwargs):
+        print('toggle value changes')
+        if state == True:
+            # conn.execute(f'UPDATE items SET collected = True WHERE id = {id}')
+            # conn.commit()
+            # print(conn.total_changes)
+            state = 'normal'
+        else:
+            state = 'down'
+        return state
+
+    def change_toggle_state(self, state, id, **kwargs):
+        if state == False:
+            conn.execute(f'UPDATE items SET collected = True WHERE id = {id}')
+            conn.commit()
+            print(conn.total_changes)
+            state = 'normal'
+        else:
+            conn.execute(f'UPDATE items SET collected = True WHERE id = {id}')
+            conn.commit()
+            print(conn.total_changes)
+            state = 'down'
+        # return state
+        
 
 class AddItems(Screen):
     # object properties not yet tested

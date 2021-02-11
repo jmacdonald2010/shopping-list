@@ -1,5 +1,8 @@
 for commits to the in-progress branch
 
+02/10/2021 22:22
+Building the formatting for the data for the departments. Running into issues figuring out how to make the toggle boxes (or checkboxes) actively update the 'collected' column in the database, and actually running into issues w/ getting the program to run w/ the initialization of the toggle buttons. once this is all figured out I will be applying it to all departments.
+
 02/09/2021 23:30
 working on importing the data from the database into pandas dataframes so as to more easily store them in the tables that will be assembled in the accordion items. Final commit/push for the night.
 

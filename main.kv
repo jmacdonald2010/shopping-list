@@ -1,15 +1,26 @@
 <MainScreen>
     produce_table: produce_table
+    produce_grid: produce_grid
     deli_bakery_table: deli_bakery_table
+    deli_bakery_grid: deli_bakery_grid
     meat_table: meat_table
+    meat_grid: meat_grid
     grocery_table: grocery_table
+    grocery_grid: grocery_grid
     beer_wine_table: beer_wine_table
+    beer_wine_grid: beer_wine_grid
     liquor_table: liquor_table
+    liquor_grid: liquor_grid
     dairy_table: dairy_table
+    dairy_grid: dairy_grid
     frozen_table: frozen_table
+    frozen_grid: frozen_grid
     pharmacy_table: pharmacy_table
+    pharmacy_grid: pharmacy_grid
     electronics_table: electronics_table
+    electronics_grid: electronics_grid
     other_table: other_table
+    other_grid: other_grid
     #do_scroll_x: False
     #do_scroll_y: True
     # size_hint: (None, 1)
@@ -49,188 +60,199 @@
                         title: 'Produce'
                         id: produce_table
                         GridLayout:
-                            cols: 5
+                            cols: 6
+                            id: produce_grid
                             collapse: True
-                            Label:
-                                text: 'checkbox goes here'
-                            Label:
-                                text: 'Item'
-                            Label:
-                                text: 'Amt'
-                            Label:
-                                text: 'Unit'
-                            Label:
-                                text: 'Isle'
+                            # Label:
+                            #     text: 'checkbox goes here'
+                            # Label:
+                            #     text: 'Item'
+                            # Label:
+                            #     text: 'Amt'
+                            # Label:
+                            #     text: 'Unit'
+                            # Label:
+                            #     text: 'Isle'
                     AccordionItem:
                         orientation: 'vertical'
                         title: 'Deli/Bakery'
                         id: deli_bakery_table
                         GridLayout:
                             cols: 5
+                            id: deli_bakery_grid
                             collapse: True
-                            Label:
-                                text: 'checkbox goes here'
-                            Label:
-                                text: 'Item'
-                            Label:
-                                text: 'Amt'
-                            Label:
-                                text: 'Unit'
-                            Label:
-                                text: 'Isle'
+                            #Label:
+                            #    text: 'checkbox goes here'
+                            #Label:
+                            #    text: 'Item'
+                            #Label:
+                            #    text: 'Amt'
+                            #Label:
+                             #   text: 'Unit'
+                            #Label:
+                            #    text: 'Isle'
                     AccordionItem:
                         orientation: 'vertical'
                         title: 'Meat'
                         id: meat_table
                         GridLayout:
                             cols: 5
+                            id: meat_grid
                             collapse: True
-                            Label:
-                                text: 'checkbox goes here'
-                            Label:
-                                text: 'Item'
-                            Label:
-                                text: 'Amt'
-                            Label:
-                                text: 'Unit'
-                            Label:
-                                text: 'Isle' 
+                            # Label:
+                            #     text: 'checkbox goes here'
+                            # Label:
+                            #     text: 'Item'
+                            # Label:
+                            #     text: 'Amt'
+                            # Label:
+                            #     text: 'Unit'
+                            # Label:
+                            #     text: 'Isle' 
                     AccordionItem:
                         orientation: 'vertical'
                         title: 'grocery'
                         id: grocery_table
                         GridLayout:
                             cols: 5
+                            id: grocery_grid
                             collapse: True
-                            Label:
-                                text: 'checkbox goes here'
-                            Label:
-                                text: 'Item'
-                            Label:
-                                text: 'Amt'
-                            Label:
-                                text: 'Unit'
-                            Label:
-                                text: 'Isle'
+                            # Label:
+                            #     text: 'checkbox goes here'
+                            # Label:
+                            #     text: 'Item'
+                            # Label:
+                            #     text: 'Amt'
+                            # Label:
+                            #     text: 'Unit'
+                            # Label:
+                            #     text: 'Isle'
                     AccordionItem:
                         orientation: 'vertical'
                         title: 'Beer/Wine'
                         id: beer_wine_table
                         GridLayout:
                             cols: 5
+                            id: beer_wine_grid
                             collapse: True
-                            Label:
-                                text: 'checkbox goes here'
-                            Label:
-                                text: 'Item'
-                            Label:
-                                text: 'Amt'
-                            Label:
-                                text: 'Unit'
-                            Label:
-                                text: 'Isle'
+                            # Label:
+                            #     text: 'checkbox goes here'
+                            # Label:
+                            #     text: 'Item'
+                            # Label:
+                            #     text: 'Amt'
+                            # Label:
+                            #     text: 'Unit'
+                            # Label:
+                            #     text: 'Isle'
                     AccordionItem:
                         orientation: 'vertical'
                         title: 'Liquor'
                         id: liquor_table
                         GridLayout:
                             cols: 5
+                            id: liquor_grid
                             collapse: True
-                            Label:
-                                text: 'checkbox goes here'
-                            Label:
-                                text: 'Item'
-                            Label:
-                                text: 'Amt'
-                            Label:
-                                text: 'Unit'
-                            Label:
-                                text: 'Isle'
+                            # Label:
+                            #     text: 'checkbox goes here'
+                            # Label:
+                            #     text: 'Item'
+                            # Label:
+                            #     text: 'Amt'
+                            # Label:
+                            #     text: 'Unit'
+                            # Label:
+                            #     text: 'Isle'
                     AccordionItem:
                         orientation: 'vertical'
                         title: 'Dairy'
                         id: dairy_table
                         GridLayout:
                             cols: 5
+                            id: dairy_grid
                             collapse: True
-                            Label:
-                                text: 'checkbox goes here'
-                            Label:
-                                text: 'Item'
-                            Label:
-                                text: 'Amt'
-                            Label:
-                                text: 'Unit'
-                            Label:
-                                text: 'Isle'  
+                            # Label:
+                            #     text: 'checkbox goes here'
+                            # Label:
+                            #     text: 'Item'
+                            # Label:
+                            #     text: 'Amt'
+                            # Label:
+                            #     text: 'Unit'
+                            # Label:
+                            #     text: 'Isle'  
                     AccordionItem:
                         orientation: 'vertical'
                         title: 'Frozen'
                         id: frozen_table
                         GridLayout:
                             cols: 5
+                            id: frozen_grid
                             collapse: True
-                            Label:
-                                text: 'checkbox goes here'
-                            Label:
-                                text: 'Item'
-                            Label:
-                                text: 'Amt'
-                            Label:
-                                text: 'Unit'
-                            Label:
-                                text: 'Isle'   
+                            # Label:
+                            #     text: 'checkbox goes here'
+                            # Label:
+                            #     text: 'Item'
+                            # Label:
+                            #     text: 'Amt'
+                            # Label:
+                            #     text: 'Unit'
+                            # Label:
+                            #     text: 'Isle'   
                     AccordionItem:
                         orientation: 'vertical'
                         title: 'Pharmacy'
                         id: pharmacy_table
                         GridLayout:
                             cols: 5
+                            id: pharmacy_grid
                             collapse: True
-                            Label:
-                                text: 'checkbox goes here'
-                            Label:
-                                text: 'Item'
-                            Label:
-                                text: 'Amt'
-                            Label:
-                                text: 'Unit'
-                            Label:
-                                text: 'Isle' 
+                            # Label:
+                            #     text: 'checkbox goes here'
+                            # Label:
+                            #     text: 'Item'
+                            # Label:
+                            #     text: 'Amt'
+                            # Label:
+                            #     text: 'Unit'
+                            # Label:
+                            #     text: 'Isle' 
                     AccordionItem:
                         orientation: 'vertical'
                         title: 'Electronics'
                         id: electronics_table
                         GridLayout:
                             cols: 5
+                            id: electronics_grid
                             collapse: True
-                            Label:
-                                text: 'checkbox goes here'
-                            Label:
-                                text: 'Item'
-                            Label:
-                                text: 'Amt'
-                            Label:
-                                text: 'Unit'
-                            Label:
-                                text: 'Isle'  
+                            # Label:
+                            #     text: 'checkbox goes here'
+                            # Label:
+                            #     text: 'Item'
+                            # Label:
+                            #     text: 'Amt'
+                            # Label:
+                            #     text: 'Unit'
+                            # Label:
+                            #     text: 'Isle'  
                     AccordionItem:
                         orientation: 'vertical'
                         title: 'Other'
                         id: other_table
                         GridLayout:
                             cols: 5
+                            id: other_grid
                             collapse: True
-                            Label:
-                                text: 'checkbox goes here'
-                            Label:
-                                text: 'Item'
-                            Label:
-                                text: 'Amt'
-                            Label:
-                                text: 'Unit'
-                            Label:
-                                text: 'Isle'                                                                                                                                                                                                                                                      
+                            # Label:
+                            #     text: 'checkbox goes here'
+                            # Label:
+                            #     text: 'Item'
+                            # Label:
+                            #     text: 'Amt'
+                            # Label:
+                            #     text: 'Unit'
+                            # Label:
+                            #     text: 'Isle'                                                                                                                                                                                                                                                      
 <AddItems>
     unit: Unit
     department: Department
