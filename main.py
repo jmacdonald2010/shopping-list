@@ -141,10 +141,14 @@ class MainScreen(Screen, GridLayout):
         self.produce_grid.add_widget(Label(text='Isle'))
         self.produce_grid.add_widget(Label(text='DateTime Added'))
 
+        self.toggles = dict()
         for row in self.produce_df.itertuples():
-            self.toggle = ToggleButton(state=self.check_toggle_state(row[4], row[6]))
-            self.toggle.bind(on_press=lambda x:self.change_toggle_state(row[4], row[6]))
-            self.produce_grid.add_widget(self.toggle)
+            self.toggles[row[6]] = ToggleButton(state=self.check_toggle_state(row[4], row[6]))
+            self.toggles[row[6]].bind(on_press=lambda x:self.change_toggle_state(row[4], row[6]))
+            # self.toggle = ToggleButton(state=self.check_toggle_state(row[4], row[6]))
+            # self.toggle.bind(on_press=lambda x:self.change_toggle_state(row[4], row[6]))
+            #self.produce_grid.add_widget(ToggleButton(state=self.check_toggle_state(row[4], row[6])).bind(on_press=lambda x:self.change_toggle_state(row[4], row[6])))
+            self.produce_grid.add_widget(self.toggles[row[6]])
             self.produce_grid.add_widget(Label(text=str(row[0])))
             self.produce_grid.add_widget(Label(text=str(row[1])))
             self.produce_grid.add_widget(Label(text=str(row[2])))

@@ -1,5 +1,8 @@
 for commits to the in-progress branch
 
+02/11/2021 22:36
+Still have the toggle box issues. Going to try to see if building the accordion item contents outside of the __int__ helps w/ my toggle issue. At the very least, it will make it more robust for when items are added to the database. Commit/push as a backup in case it fails hard.
+
 02/11/2021 21:48
 Toggle boxes are working now w/ button presses, but they are only writing to one item in the database. Going to try removing the actual variable name and going back to a similar approach to what I had last night, only keeping the lambda for on_press.
 
