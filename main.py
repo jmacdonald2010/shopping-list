@@ -142,7 +142,9 @@ class MainScreen(Screen, GridLayout):
         self.produce_grid.add_widget(Label(text='DateTime Added'))
 
         for row in self.produce_df.itertuples():
-            self.produce_grid.add_widget(ToggleButton(state=self.check_toggle_state(row[4], row[6]), on_press=self.change_toggle_state(row[4], row[6])))
+            self.toggle = ToggleButton(state=self.check_toggle_state(row[4], row[6]))
+            self.toggle.bind(on_press=lambda x:self.change_toggle_state(row[4], row[6]))
+            self.produce_grid.add_widget(self.toggle)
             self.produce_grid.add_widget(Label(text=str(row[0])))
             self.produce_grid.add_widget(Label(text=str(row[1])))
             self.produce_grid.add_widget(Label(text=str(row[2])))
@@ -212,14 +214,14 @@ class MainScreen(Screen, GridLayout):
         self.other_table.add_widget(Label(text='Isle'))
 
     def check_toggle_state(self, state, id, **kwargs):
-        print('toggle value changes')
+        # print('toggle value changes')
         if state == True:
             # conn.execute(f'UPDATE items SET collected = True WHERE id = {id}')
             # conn.commit()
             # print(conn.total_changes)
-            state = 'normal'
-        else:
             state = 'down'
+        else:
+            state = 'normal'
         return state
 
     def change_toggle_state(self, state, id, **kwargs):
@@ -229,11 +231,11 @@ class MainScreen(Screen, GridLayout):
             print(conn.total_changes)
             state = 'normal'
         else:
-            conn.execute(f'UPDATE items SET collected = True WHERE id = {id}')
+            conn.execute(f'UPDATE items SET collected = False WHERE id = {id}')
             conn.commit()
             print(conn.total_changes)
             state = 'down'
-        # return state
+        return state
         
 
 class AddItems(Screen):

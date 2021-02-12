@@ -1,5 +1,8 @@
 for commits to the in-progress branch
 
+02/11/2021 21:48
+Toggle boxes are working now w/ button presses, but they are only writing to one item in the database. Going to try removing the actual variable name and going back to a similar approach to what I had last night, only keeping the lambda for on_press.
+
 02/10/2021 22:22
 Building the formatting for the data for the departments. Running into issues figuring out how to make the toggle boxes (or checkboxes) actively update the 'collected' column in the database, and actually running into issues w/ getting the program to run w/ the initialization of the toggle buttons. once this is all figured out I will be applying it to all departments.
 
