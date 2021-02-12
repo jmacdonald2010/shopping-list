@@ -134,7 +134,7 @@ class MainScreen(Screen, GridLayout):
 
         # attempt to create the contents of the accordion item here and not in kv b/c it's dynamic
         # build produce accordion contents
-        self.produce_grid.add_widget(Label(text='Collected?')) # blank b/c checkbox
+        '''self.produce_grid.add_widget(Label(text='Collected?')) # blank b/c checkbox
         self.produce_grid.add_widget(Label(text='Item'))
         self.produce_grid.add_widget(Label(text='Amt'))
         self.produce_grid.add_widget(Label(text='Unit'))
@@ -153,7 +153,7 @@ class MainScreen(Screen, GridLayout):
             self.produce_grid.add_widget(Label(text=str(row[1])))
             self.produce_grid.add_widget(Label(text=str(row[2])))
             self.produce_grid.add_widget(Label(text=str(row[3])))
-            self.produce_grid.add_widget(Label(text=str(row[7])))
+            self.produce_grid.add_widget(Label(text=str(row[7])))'''
             
             # pass
 
@@ -217,6 +217,57 @@ class MainScreen(Screen, GridLayout):
         self.other_table.add_widget(Label(text='Unit'))
         self.other_table.add_widget(Label(text='Isle'))
 
+        # this is to help out the build_department_accordion funcs
+        self.produce_accordion_labels_added = False
+        self.produce_accordion_items_added = []
+        self.toggles = dict()
+        self.produce_accordion_toggles_bound = False
+
+
+    def build_produce_accordion(self, **kwargs):
+        # reread the db every time the menu is opened
+        self.produce_df = pd.read_sql('SELECT name, quantity, unit_id, isle, collected, store_id, id, time_created FROM items WHERE department_id = 1;', conn, index_col='name')
+        # add the top labels
+        if self.produce_accordion_labels_added == False:
+            self.produce_grid.add_widget(Label(text='Collected?'))
+            self.produce_grid.add_widget(Label(text='Item'))
+            self.produce_grid.add_widget(Label(text='Amt'))
+            self.produce_grid.add_widget(Label(text='Unit'))
+            self.produce_grid.add_widget(Label(text='Isle'))
+            self.produce_grid.add_widget(Label(text='DateTime Added'))
+
+        self.produce_accordion_labels_added = True
+
+        # fill the accordion
+        for row in self.produce_df.itertuples():
+            if row[6] in self.produce_accordion_items_added:
+                continue
+            else:
+                self.toggles[row[6]] = ToggleButton(state=self.check_toggle_state(row[4], row[6]))
+                # self.toggles[row[6]].bind(on_press= lambda x:self.toggle_test_func(row[6]))
+                #self.toggles[row[6]].bind(on_press=lambda x:self.change_toggle_state(row[4], row[6]))
+                # self.toggle = ToggleButton(state=self.check_toggle_state(row[4], row[6]))
+                # self.toggle.bind(on_press=lambda x:self.change_toggle_state(row[4], row[6]))
+                #self.produce_grid.add_widget(ToggleButton(state=self.check_toggle_state(row[4], row[6])).bind(on_press=lambda x:self.change_toggle_state(row[4], row[6])))
+                self.produce_grid.add_widget(self.toggles[row[6]])
+                self.produce_grid.add_widget(Label(text=str(row[0])))
+                self.produce_grid.add_widget(Label(text=str(row[1])))
+                self.produce_grid.add_widget(Label(text=str(row[2])))
+                self.produce_grid.add_widget(Label(text=str(row[3])))
+                self.produce_grid.add_widget(Label(text=str(row[7])))
+                self.produce_accordion_items_added.append(row[6])
+        
+        '''i = 0
+        for button in self.produce_grid.children[1:]:
+            button.bind(on_press= lambda x: self.toggle_test_func('test'))'''
+
+        if self.produce_accordion_toggles_bound == False:
+            for key, val in self.toggles.items():
+                val.bind(on_press= lambda x:self.toggle_test_func(key))
+                self.produce_accordion_toggles_bound = True
+
+
+
     def check_toggle_state(self, state, id, **kwargs):
         # print('toggle value changes')
         if state == True:
@@ -229,18 +280,23 @@ class MainScreen(Screen, GridLayout):
         return state
 
     def change_toggle_state(self, state, id, **kwargs):
-        if state == False:
-            conn.execute(f'UPDATE items SET collected = True WHERE id = {id}')
+        if state == 0:
+            conn.execute(f'UPDATE items SET collected = 1 WHERE id = {id}')
             conn.commit()
             print(conn.total_changes)
             state = 'normal'
-        else:
-            conn.execute(f'UPDATE items SET collected = False WHERE id = {id}')
+        elif state == 1:
+            conn.execute(f'UPDATE items SET collected = 0 WHERE id = {id}')
             conn.commit()
             print(conn.total_changes)
             state = 'down'
         return state
+
+    def toggle_test_func(self, id):
+        print(id)
         
+    '''def test_func(self):
+        print('test func ran')'''
 
 class AddItems(Screen):
     # object properties not yet tested

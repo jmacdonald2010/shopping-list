@@ -1,5 +1,8 @@
 for commits to the in-progress branch
 
+02/12/2021 0:00
+Made the produce accordion load upon opening instead of during the screen's __init__. However, the toggle button issue is still not resolved, they still always print the last button value that was iterated over. I'm not quite sure how to address this, as I'm not sure how to add values to the buttons as they're created while avoiding this issue while iterating. I have a feeling that this issue is going to take a long time to resolve.
+
 02/11/2021 22:36
 Still have the toggle box issues. Going to try to see if building the accordion item contents outside of the __int__ helps w/ my toggle issue. At the very least, it will make it more robust for when items are added to the database. Commit/push as a backup in case it fails hard.
 
