@@ -1,5 +1,8 @@
 for commits to the in-progress branch
 
+02/12/2021 22:02
+Figured out my lambda issue w/ the toggle button. Now they return their button ID when pressed, which is a big step forward in getting them to properly write to the db. Enough work for the night, going to commit and keep pushing on at another time, but the end of the problem is coming into sight now.
+
 02/12/2021 0:00
 Made the produce accordion load upon opening instead of during the screen's __init__. However, the toggle button issue is still not resolved, they still always print the last button value that was iterated over. I'm not quite sure how to address this, as I'm not sure how to add values to the buttons as they're created while avoiding this issue while iterating. I have a feeling that this issue is going to take a long time to resolve.
 

@@ -261,10 +261,15 @@ class MainScreen(Screen, GridLayout):
         for button in self.produce_grid.children[1:]:
             button.bind(on_press= lambda x: self.toggle_test_func('test'))'''
 
-        if self.produce_accordion_toggles_bound == False:
-            for key, val in self.toggles.items():
-                val.bind(on_press= lambda x:self.toggle_test_func(key))
-                self.produce_accordion_toggles_bound = True
+        self.produce_lambdas = dict()
+        # if self.produce_accordion_toggles_bound == False:
+        for button in self.produce_grid.children[1:]:
+            if isinstance(button, ToggleButton):
+                for key, value in self.toggles.items():
+                    if button == value:
+                        self.produce_lambdas[key] = lambda key: self.toggle_test_func(key)
+                        button.bind(on_press= self.produce_lambdas[key])
+            # self.produce_accordion_toggles_bound = True
 
 
 
