@@ -106,8 +106,6 @@ class MainScreen(Screen, GridLayout):
     electronics_grid = ObjectProperty(None)
     other_table = ObjectProperty(None)
     other_grid = ObjectProperty(None)
-    shopping_list = ObjectProperty(None)
-
 
     def __init__(self, **kwargs):
         super(MainScreen, self).__init__(**kwargs)
@@ -119,7 +117,7 @@ class MainScreen(Screen, GridLayout):
         # I think it may also be easier to do join statements to populate the actual department names, unit names, store names, etc.
         '''self.produce_df = pd.read_sql('SELECT name, quantity, unit_id, isle, collected, store_id, id, time_created FROM items WHERE department_id = 1;', conn, index_col='name')'''
         # print(self.produce_df)
-        '''self.deli_bakery_df = pd.read_sql('SELECT name, quantity, unit_id, isle, collected, store_id, id FROM items WHERE department_id = 2;', conn, index_col='name')
+        self.deli_bakery_df = pd.read_sql('SELECT name, quantity, unit_id, isle, collected, store_id, id FROM items WHERE department_id = 2;', conn, index_col='name')
         # print(self.deli_bakery_df)
         self.meat_df = pd.read_sql('SELECT name, quantity, unit_id, isle, collected, store_id, id FROM items WHERE department_id = 3;', conn, index_col='name')
         self.grocery_df = pd.read_sql('SELECT name, quantity, unit_id, isle, collected, store_id, id FROM items WHERE department_id = 4;', conn, index_col='name')
@@ -136,7 +134,7 @@ class MainScreen(Screen, GridLayout):
 
         # attempt to create the contents of the accordion item here and not in kv b/c it's dynamic
         # build produce accordion contents
-        self.produce_grid.add_widget(Label(text='Collected?')) # blank b/c checkbox
+        '''self.produce_grid.add_widget(Label(text='Collected?')) # blank b/c checkbox
         self.produce_grid.add_widget(Label(text='Item'))
         self.produce_grid.add_widget(Label(text='Amt'))
         self.produce_grid.add_widget(Label(text='Unit'))
@@ -155,7 +153,7 @@ class MainScreen(Screen, GridLayout):
             self.produce_grid.add_widget(Label(text=str(row[1])))
             self.produce_grid.add_widget(Label(text=str(row[2])))
             self.produce_grid.add_widget(Label(text=str(row[3])))
-            self.produce_grid.add_widget(Label(text=str(row[7])))
+            self.produce_grid.add_widget(Label(text=str(row[7])))'''
             
             # pass
 
@@ -217,52 +215,16 @@ class MainScreen(Screen, GridLayout):
         self.other_table.add_widget(Label(text='Item'))
         self.other_table.add_widget(Label(text='Amt'))
         self.other_table.add_widget(Label(text='Unit'))
-        self.other_table.add_widget(Label(text='Isle'))'''
+        self.other_table.add_widget(Label(text='Isle'))
 
         # this is to help out the build_department_accordion funcs
-        # self.produce_accordion_labels_added = False
-        # self.produce_accordion_items_added = []
-        
-        # assemble a list of the departments in the db
-        # this will be used to build the accordion items
-        self.departments = []
-        self.department_ids =[]
-        departments = conn.execute('SELECT * FROM departments;')
-        departments = departments.fetchall()
-        for department in departments:
-            department_id = department[0]
-            department_name = department[1]
-            self.department_ids.append(department_id)
-            self.departments.append(department_name)
-        
-        # build the accordion items to the main screen
-        self.department_accord_lambdas = dict()
-        for department, id in zip(self.departments, self.department_ids):
-            # create the accordion item
-            department_accordion = AccordionItem(orientation='vertical', title=department) # function will likely need changed to have an input
-            # create the lambda that will act as the on_touch_down binding
-            self.shopping_list.add_widget(department_accordion)
-
-            self.department_accord_lambdas[id] = lambda id, *args: self.build_accordion(id)
-            # now bind that specific lambda to that accordion item
-            # department_accordion.bind(on_touch_down= self.build_accordion(id))
-            department_accordion.bind(on_touch_down= self.department_accord_lambdas[id])
-            # add a grid layout to the accordion item
-            department_accordion.add_widget(GridLayout(cols=6))
-            # add the accordion item to the accordion
-
+        self.produce_accordion_labels_added = False
+        self.produce_accordion_items_added = []
         self.toggles = dict()
-        # self.produce_accordion_toggles_bound = False
+        self.produce_accordion_toggles_bound = False
 
-    # this is a test fun, comment out and fix the one below when it is time to do so
-    def build_accordion(self,id, **kwargs):
-        print('accordion built')
-        return self
-        
 
-    '''def build_accordion(self, **kwargs):
-        # new idea, build the accordionsItems when the app is built
-        # use this function (change vars using a dict?) to build each one
+    def build_produce_accordion(self, **kwargs):
         # reread the db every time the menu is opened
         self.produce_df = pd.read_sql('SELECT name, quantity, unit_id, isle, collected, store_id, id, time_created FROM items WHERE department_id = 1;', conn, index_col='name')
         # add the top labels
@@ -294,6 +256,10 @@ class MainScreen(Screen, GridLayout):
                 self.produce_grid.add_widget(Label(text=str(row[3])))
                 self.produce_grid.add_widget(Label(text=str(row[7])))
                 self.produce_accordion_items_added.append(row[6])
+        
+        '''i = 0
+        for button in self.produce_grid.children[1:]:
+            button.bind(on_press= lambda x: self.toggle_test_func('test'))'''
 
         # this is so I can actually get the item ID # assoc. w/ the button to bind to the function properly
         self.produce_toggles_key_list = []
@@ -311,7 +277,7 @@ class MainScreen(Screen, GridLayout):
                         # self.toggle_id = self.produce_toggles_key_list.index(key)
                         self.produce_lambdas[key] = lambda key: self.change_toggle_state(key)
                         button.bind(on_press= self.produce_lambdas[key])
-            # self.produce_accordion_toggles_bound = True'''
+            # self.produce_accordion_toggles_bound = True
 
 
 

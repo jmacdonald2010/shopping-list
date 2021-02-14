@@ -1,5 +1,8 @@
 for commits to the in-progress branch
 
+02/14/2021 12:50
+Realized that the way I was building the accordion item for the produce accordion was not necessarily the best approach, as I would need to duplicate it for every single accordion item, and the number of accordion items would be fixed, which is not necessarily what I want. I have started to add the accordion items with python instead of the .kv file, but am running into some issues binding the build_accordion function to the on_touch_down part of the function. Got it so the function works when an accordion item is clicked, but now we don't have dropdowns, which is another issue to resolve. Need to do some housework, may work on it more later.
+
 02/13/2021 22:03
 Toggle buttons work! They now write to a DB whether or not that object is collected. Might not be the smoothest or cleanest method for doing so, but it is functional now. Commit/push b/c it works now, very much needs cleaned up, but also will be the last bit of work for the night.
 
