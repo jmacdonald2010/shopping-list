@@ -1,5 +1,8 @@
 for commits to the in-progress branch
 
+02/14/2021 16:46
+Going to make it so that the dropdowns just populate when the main screen is initialized. I think it will be easier that way. Hopefully, I will be able to make it so the items in the accordions refresh when an item is added to the db. Going to delete a lot of the things I had been trying earlier today, b/c my code is currently a mess.
+
 02/14/2021 12:50
 Realized that the way I was building the accordion item for the produce accordion was not necessarily the best approach, as I would need to duplicate it for every single accordion item, and the number of accordion items would be fixed, which is not necessarily what I want. I have started to add the accordion items with python instead of the .kv file, but am running into some issues binding the build_accordion function to the on_touch_down part of the function. Got it so the function works when an accordion item is clicked, but now we don't have dropdowns, which is another issue to resolve. Need to do some housework, may work on it more later.
 

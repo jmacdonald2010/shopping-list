@@ -256,8 +256,8 @@ class MainScreen(Screen, GridLayout):
 
     # this is a test fun, comment out and fix the one below when it is time to do so
     def build_accordion(self,id, **kwargs):
-        print('accordion built')
-        return self
+        print(id, 'accordion built')
+        # return self
         
 
     '''def build_accordion(self, **kwargs):
