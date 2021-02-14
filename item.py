@@ -8,7 +8,7 @@ class Item:
         self.quantity = 0 # these are the defaults to be updated in the main.py
         self.quantity_unit = ""
         self.department = ""
-        self.collected = False
+        self.collected = 0
         # optional ones
         self.isle = 0
         self.store = ""

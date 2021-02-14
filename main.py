@@ -112,113 +112,6 @@ class MainScreen(Screen, GridLayout):
     def __init__(self, **kwargs):
         super(MainScreen, self).__init__(**kwargs)
 
-        # load the data into the accordionItem tables
-        # first, load all of the data
-        # first, create a produce df
-        # NOTE something I worry about here is if these dataframes will get actively updated when I add items from the other screen.
-        # I think it may also be easier to do join statements to populate the actual department names, unit names, store names, etc.
-        '''self.produce_df = pd.read_sql('SELECT name, quantity, unit_id, isle, collected, store_id, id, time_created FROM items WHERE department_id = 1;', conn, index_col='name')'''
-        # print(self.produce_df)
-        '''self.deli_bakery_df = pd.read_sql('SELECT name, quantity, unit_id, isle, collected, store_id, id FROM items WHERE department_id = 2;', conn, index_col='name')
-        # print(self.deli_bakery_df)
-        self.meat_df = pd.read_sql('SELECT name, quantity, unit_id, isle, collected, store_id, id FROM items WHERE department_id = 3;', conn, index_col='name')
-        self.grocery_df = pd.read_sql('SELECT name, quantity, unit_id, isle, collected, store_id, id FROM items WHERE department_id = 4;', conn, index_col='name')
-        self.beer_wine_df = pd.read_sql('SELECT name, quantity, unit_id, isle, collected, store_id, id FROM items WHERE department_id = 5;', conn, index_col='name')
-        self.liquor_df = pd.read_sql('SELECT name, quantity, unit_id, isle, collected, store_id, id FROM items WHERE department_id = 6;', conn, index_col='name')
-        self.dairy_df = pd.read_sql('SELECT name, quantity, unit_id, isle, collected, store_id, id FROM items WHERE department_id = 7;', conn, index_col='name')
-        self.frozen_df = pd.read_sql('SELECT name, quantity, unit_id, isle, collected, store_id, id FROM items WHERE department_id = 8;', conn, index_col='name')
-        self.pharmacy_df = pd.read_sql('SELECT name, quantity, unit_id, isle, collected, store_id, id FROM items WHERE department_id = 9;', conn, index_col='name')
-        self.electronics_df = pd.read_sql('SELECT name, quantity, unit_id, isle, collected, store_id, id FROM items WHERE department_id = 10;', conn, index_col='name')
-        self.other_df = pd.read_sql('SELECT name, quantity, unit_id, isle, collected, store_id, id FROM items WHERE department_id = 11;', conn, index_col='name')
-
-        # first, I think I need to set the grid layout from within here
-        # self.produce_table = GridLayout(cols=5)
-
-        # attempt to create the contents of the accordion item here and not in kv b/c it's dynamic
-        # build produce accordion contents
-        self.produce_grid.add_widget(Label(text='Collected?')) # blank b/c checkbox
-        self.produce_grid.add_widget(Label(text='Item'))
-        self.produce_grid.add_widget(Label(text='Amt'))
-        self.produce_grid.add_widget(Label(text='Unit'))
-        self.produce_grid.add_widget(Label(text='Isle'))
-        self.produce_grid.add_widget(Label(text='DateTime Added'))
-
-        self.toggles = dict()
-        for row in self.produce_df.itertuples():
-            self.toggles[row[6]] = ToggleButton(state=self.check_toggle_state(row[4], row[6]))
-            self.toggles[row[6]].bind(on_press=lambda x:self.change_toggle_state(row[4], row[6]))
-            # self.toggle = ToggleButton(state=self.check_toggle_state(row[4], row[6]))
-            # self.toggle.bind(on_press=lambda x:self.change_toggle_state(row[4], row[6]))
-            #self.produce_grid.add_widget(ToggleButton(state=self.check_toggle_state(row[4], row[6])).bind(on_press=lambda x:self.change_toggle_state(row[4], row[6])))
-            self.produce_grid.add_widget(self.toggles[row[6]])
-            self.produce_grid.add_widget(Label(text=str(row[0])))
-            self.produce_grid.add_widget(Label(text=str(row[1])))
-            self.produce_grid.add_widget(Label(text=str(row[2])))
-            self.produce_grid.add_widget(Label(text=str(row[3])))
-            self.produce_grid.add_widget(Label(text=str(row[7])))
-            
-            # pass
-
-        self.deli_bakery_table.add_widget(Label(text='')) # blank b/c checkbox
-        self.deli_bakery_table.add_widget(Label(text='Item'))
-        self.deli_bakery_table.add_widget(Label(text='Amt'))
-        self.deli_bakery_table.add_widget(Label(text='Unit'))
-        self.deli_bakery_table.add_widget(Label(text='Isle'))        
-        
-        self.meat_table.add_widget(Label(text='')) # blank b/c checkbox
-        self.meat_table.add_widget(Label(text='Item'))
-        self.meat_table.add_widget(Label(text='Amt'))
-        self.meat_table.add_widget(Label(text='Unit'))
-        self.meat_table.add_widget(Label(text='Isle'))
-
-        self.grocery_table.add_widget(Label(text='')) # blank b/c checkbox
-        self.grocery_table.add_widget(Label(text='Item'))
-        self.grocery_table.add_widget(Label(text='Amt'))
-        self.grocery_table.add_widget(Label(text='Unit'))
-        self.grocery_table.add_widget(Label(text='Isle'))
-
-        self.beer_wine_table.add_widget(Label(text='')) # blank b/c checkbox
-        self.beer_wine_table.add_widget(Label(text='Item'))
-        self.beer_wine_table.add_widget(Label(text='Amt'))
-        self.beer_wine_table.add_widget(Label(text='Unit'))
-        self.beer_wine_table.add_widget(Label(text='Isle'))
-
-        self.liquor_table.add_widget(Label(text='')) # blank b/c checkbox
-        self.liquor_table.add_widget(Label(text='Item'))
-        self.liquor_table.add_widget(Label(text='Amt'))
-        self.liquor_table.add_widget(Label(text='Unit'))
-        self.liquor_table.add_widget(Label(text='Isle'))
-
-        self.dairy_table.add_widget(Label(text='')) # blank b/c checkbox
-        self.dairy_table.add_widget(Label(text='Item'))
-        self.dairy_table.add_widget(Label(text='Amt'))
-        self.dairy_table.add_widget(Label(text='Unit'))
-        self.dairy_table.add_widget(Label(text='Isle'))
-
-        self.frozen_table.add_widget(Label(text='')) # blank b/c checkbox
-        self.frozen_table.add_widget(Label(text='Item'))
-        self.frozen_table.add_widget(Label(text='Amt'))
-        self.frozen_table.add_widget(Label(text='Unit'))
-        self.frozen_table.add_widget(Label(text='Isle'))
-
-        self.pharmacy_table.add_widget(Label(text='')) # blank b/c checkbox
-        self.pharmacy_table.add_widget(Label(text='Item'))
-        self.pharmacy_table.add_widget(Label(text='Amt'))
-        self.pharmacy_table.add_widget(Label(text='Unit'))
-        self.pharmacy_table.add_widget(Label(text='Isle'))
-
-        self.electronics_table.add_widget(Label(text='')) # blank b/c checkbox
-        self.electronics_table.add_widget(Label(text='Item'))
-        self.electronics_table.add_widget(Label(text='Amt'))
-        self.electronics_table.add_widget(Label(text='Unit'))
-        self.electronics_table.add_widget(Label(text='Isle'))
-
-        self.other_table.add_widget(Label(text='')) # blank b/c checkbox
-        self.other_table.add_widget(Label(text='Item'))
-        self.other_table.add_widget(Label(text='Amt'))
-        self.other_table.add_widget(Label(text='Unit'))
-        self.other_table.add_widget(Label(text='Isle'))'''
-
         # this is to help out the build_department_accordion funcs
         # self.produce_accordion_labels_added = False
         # self.produce_accordion_items_added = []
@@ -235,26 +128,58 @@ class MainScreen(Screen, GridLayout):
             self.department_ids.append(department_id)
             self.departments.append(department_name)
         
+        self.toggles = dict()
+
+
         # build the accordion items to the main screen
-        self.department_accord_lambdas = dict()
+        self.department_dfs = dict()
         for department, id in zip(self.departments, self.department_ids):
             # create the accordion item
-            department_accordion = AccordionItem(orientation='vertical', title=department) # function will likely need changed to have an input
-            # create the lambda that will act as the on_touch_down binding
+            department_accordion = AccordionItem(orientation='vertical', title=department)
+            department_grid = GridLayout(cols=6)
             self.shopping_list.add_widget(department_accordion)
+            department_accordion.add_widget(department_grid)
 
-            self.department_accord_lambdas[id] = lambda id, *args: self.build_accordion(id)
-            # now bind that specific lambda to that accordion item
-            # department_accordion.bind(on_touch_down= self.build_accordion(id))
-            department_accordion.bind(on_touch_down= self.department_accord_lambdas[id])
-            # add a grid layout to the accordion item
-            department_accordion.add_widget(GridLayout(cols=6))
-            # add the accordion item to the accordion
+            # now populate the accordion, first the column names
+            department_grid.add_widget(Label(text="Collected?"))
+            department_grid.add_widget(Label(text="Item"))
+            department_grid.add_widget(Label(text="Amt"))
+            department_grid.add_widget(Label(text="Unit"))
+            department_grid.add_widget(Label(text="Isle"))
+            department_grid.add_widget(Label(text="DateTime Added"))
 
-        self.toggles = dict()
-        # self.produce_accordion_toggles_bound = False
+            # now get the data from the db
+            self.department_dfs[id] = pd.read_sql(f'SELECT name, quantity, unit_id, isle, collected, store_id, id, time_created FROM items WHERE department_id = {id};', conn, index_col='name')
 
-    # this is a test fun, comment out and fix the one below when it is time to do so
+            # iterate thru the DF and create labels for them; not adding button binding functionality yet
+            for row in self.department_dfs[id].itertuples():
+                self.toggles[row[6]] = ToggleButton(state=self.check_toggle_state(row[4], row[6]))
+                department_grid.add_widget(self.toggles[row[6]])
+                department_grid.add_widget(Label(text=str(row[0])))
+                department_grid.add_widget(Label(text=str(row[1])))
+                department_grid.add_widget(Label(text=str(row[2])))
+                department_grid.add_widget(Label(text=str(row[3])))
+                department_grid.add_widget(Label(text=str(row[7])))
+            
+            # get the keys and vals in ordered lists
+            self.toggles_key_list = []
+            self.toggles_val_list = []
+            for key, val in self.toggles.items():
+                self.toggles_key_list.append(key)
+                self.toggles_val_list.append(val)
+        
+            self.toggles_lambdas = dict()
+            # if self.produce_accordion_toggles_bound == False:
+            for button in department_grid.children[1:]:
+                if isinstance(button, ToggleButton):
+                    for key, value in self.toggles.items():
+                        if button == value:
+                            # self.toggle_id = self.produce_toggles_key_list.index(key)
+                            self.toggles_lambdas[key] = lambda key: self.change_toggle_state(key)
+                            button.bind(on_press= self.toggles_lambdas[key])
+
+
+    # this is a test func, comment out and fix the one below when it is time to do so
     def build_accordion(self,id, **kwargs):
         print(id, 'accordion built')
         # return self
@@ -327,8 +252,8 @@ class MainScreen(Screen, GridLayout):
         return state
 
     def change_toggle_state(self, id, **kwargs):
-        id = self.produce_toggles_val_list.index(id)
-        id = self.produce_toggles_key_list[id]
+        id = self.toggles_val_list.index(id)
+        id = self.toggles_key_list[id]
         state = conn.execute(f'SELECT collected FROM items WHERE id = {id}')
         state = state.fetchall()
         state = state[0]
