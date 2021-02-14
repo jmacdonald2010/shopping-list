@@ -1,5 +1,8 @@
 for commits to the in-progress branch
 
+02/13/2021 22:03
+Toggle buttons work! They now write to a DB whether or not that object is collected. Might not be the smoothest or cleanest method for doing so, but it is functional now. Commit/push b/c it works now, very much needs cleaned up, but also will be the last bit of work for the night.
+
 02/12/2021 22:02
 Figured out my lambda issue w/ the toggle button. Now they return their button ID when pressed, which is a big step forward in getting them to properly write to the db. Enough work for the night, going to commit and keep pushing on at another time, but the end of the problem is coming into sight now.
 

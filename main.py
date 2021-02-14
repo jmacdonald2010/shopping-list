@@ -261,13 +261,21 @@ class MainScreen(Screen, GridLayout):
         for button in self.produce_grid.children[1:]:
             button.bind(on_press= lambda x: self.toggle_test_func('test'))'''
 
+        # this is so I can actually get the item ID # assoc. w/ the button to bind to the function properly
+        self.produce_toggles_key_list = []
+        self.produce_toggles_val_list = []
+        for key, val in self.toggles.items():
+            self.produce_toggles_key_list.append(key)
+            self.produce_toggles_val_list.append(val)
+
         self.produce_lambdas = dict()
         # if self.produce_accordion_toggles_bound == False:
         for button in self.produce_grid.children[1:]:
             if isinstance(button, ToggleButton):
                 for key, value in self.toggles.items():
                     if button == value:
-                        self.produce_lambdas[key] = lambda key: self.toggle_test_func(key)
+                        # self.toggle_id = self.produce_toggles_key_list.index(key)
+                        self.produce_lambdas[key] = lambda key: self.change_toggle_state(key)
                         button.bind(on_press= self.produce_lambdas[key])
             # self.produce_accordion_toggles_bound = True
 
@@ -284,18 +292,23 @@ class MainScreen(Screen, GridLayout):
             state = 'normal'
         return state
 
-    def change_toggle_state(self, state, id, **kwargs):
-        if state == 0:
+    def change_toggle_state(self, id, **kwargs):
+        id = self.produce_toggles_val_list.index(id)
+        id = self.produce_toggles_key_list[id]
+        state = conn.execute(f'SELECT collected FROM items WHERE id = {id}')
+        state = state.fetchall()
+        state = state[0]
+        if state[0] == 0:
             conn.execute(f'UPDATE items SET collected = 1 WHERE id = {id}')
             conn.commit()
             print(conn.total_changes)
             state = 'normal'
-        elif state == 1:
+        elif state[0] == 1:
             conn.execute(f'UPDATE items SET collected = 0 WHERE id = {id}')
             conn.commit()
             print(conn.total_changes)
             state = 'down'
-        return state
+        return state[0]
 
     def toggle_test_func(self, id):
         print(id)
