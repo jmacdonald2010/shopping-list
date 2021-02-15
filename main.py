@@ -112,12 +112,10 @@ class MainScreen(Screen, GridLayout):
     def __init__(self, **kwargs):
         super(MainScreen, self).__init__(**kwargs)
 
-        # this is to help out the build_department_accordion funcs
-        # self.produce_accordion_labels_added = False
-        # self.produce_accordion_items_added = []
+        self.build_accordions()
         
-        # assemble a list of the departments in the db
-        # this will be used to build the accordion items
+
+    def build_accordions(self, **kwargs):
         self.departments = []
         self.department_ids =[]
         departments = conn.execute('SELECT * FROM departments;')
@@ -129,6 +127,15 @@ class MainScreen(Screen, GridLayout):
             self.departments.append(department_name)
         
         self.toggles = dict()
+
+        # dict for unit labels
+        self.unit_dict = dict()
+        self.units = conn.execute('SELECT * FROM units;')
+        self.units = self.units.fetchall()
+        for unit in self.units:
+            unit_id = unit[0]
+            unit_name = unit[1]
+            self.unit_dict[unit_id] = unit_name
 
 
         # build the accordion items to the main screen
@@ -157,7 +164,7 @@ class MainScreen(Screen, GridLayout):
                 department_grid.add_widget(self.toggles[row[6]])
                 department_grid.add_widget(Label(text=str(row[0])))
                 department_grid.add_widget(Label(text=str(row[1])))
-                department_grid.add_widget(Label(text=str(row[2])))
+                department_grid.add_widget(Label(text=self.unit_dict[row[2]]))
                 department_grid.add_widget(Label(text=str(row[3])))
                 department_grid.add_widget(Label(text=str(row[7])))
             
@@ -177,68 +184,6 @@ class MainScreen(Screen, GridLayout):
                             # self.toggle_id = self.produce_toggles_key_list.index(key)
                             self.toggles_lambdas[key] = lambda key: self.change_toggle_state(key)
                             button.bind(on_press= self.toggles_lambdas[key])
-
-
-    # this is a test func, comment out and fix the one below when it is time to do so
-    def build_accordion(self,id, **kwargs):
-        print(id, 'accordion built')
-        # return self
-        
-
-    '''def build_accordion(self, **kwargs):
-        # new idea, build the accordionsItems when the app is built
-        # use this function (change vars using a dict?) to build each one
-        # reread the db every time the menu is opened
-        self.produce_df = pd.read_sql('SELECT name, quantity, unit_id, isle, collected, store_id, id, time_created FROM items WHERE department_id = 1;', conn, index_col='name')
-        # add the top labels
-        if self.produce_accordion_labels_added == False:
-            self.produce_grid.add_widget(Label(text='Collected?'))
-            self.produce_grid.add_widget(Label(text='Item'))
-            self.produce_grid.add_widget(Label(text='Amt'))
-            self.produce_grid.add_widget(Label(text='Unit'))
-            self.produce_grid.add_widget(Label(text='Isle'))
-            self.produce_grid.add_widget(Label(text='DateTime Added'))
-
-        self.produce_accordion_labels_added = True
-
-        # fill the accordion
-        for row in self.produce_df.itertuples():
-            if row[6] in self.produce_accordion_items_added:
-                continue
-            else:
-                self.toggles[row[6]] = ToggleButton(state=self.check_toggle_state(row[4], row[6]))
-                # self.toggles[row[6]].bind(on_press= lambda x:self.toggle_test_func(row[6]))
-                #self.toggles[row[6]].bind(on_press=lambda x:self.change_toggle_state(row[4], row[6]))
-                # self.toggle = ToggleButton(state=self.check_toggle_state(row[4], row[6]))
-                # self.toggle.bind(on_press=lambda x:self.change_toggle_state(row[4], row[6]))
-                #self.produce_grid.add_widget(ToggleButton(state=self.check_toggle_state(row[4], row[6])).bind(on_press=lambda x:self.change_toggle_state(row[4], row[6])))
-                self.produce_grid.add_widget(self.toggles[row[6]])
-                self.produce_grid.add_widget(Label(text=str(row[0])))
-                self.produce_grid.add_widget(Label(text=str(row[1])))
-                self.produce_grid.add_widget(Label(text=str(row[2])))
-                self.produce_grid.add_widget(Label(text=str(row[3])))
-                self.produce_grid.add_widget(Label(text=str(row[7])))
-                self.produce_accordion_items_added.append(row[6])
-
-        # this is so I can actually get the item ID # assoc. w/ the button to bind to the function properly
-        self.produce_toggles_key_list = []
-        self.produce_toggles_val_list = []
-        for key, val in self.toggles.items():
-            self.produce_toggles_key_list.append(key)
-            self.produce_toggles_val_list.append(val)
-
-        self.produce_lambdas = dict()
-        # if self.produce_accordion_toggles_bound == False:
-        for button in self.produce_grid.children[1:]:
-            if isinstance(button, ToggleButton):
-                for key, value in self.toggles.items():
-                    if button == value:
-                        # self.toggle_id = self.produce_toggles_key_list.index(key)
-                        self.produce_lambdas[key] = lambda key: self.change_toggle_state(key)
-                        button.bind(on_press= self.produce_lambdas[key])
-            # self.produce_accordion_toggles_bound = True'''
-
-
 
     def check_toggle_state(self, state, id, **kwargs):
         # print('toggle value changes')
