@@ -1,5 +1,8 @@
 for commits to the in-progress branch
 
+02/15/2021 16:18
+The remove collected items button works now; it refreshes the main screen (deletes all children of Accordion, then rebuilds them). Now trying to figure out how to refresh the main screen when new items are added.
+
 02/14/2021 17:18
 Got the init func to populate all of the department data in the appropriate accordions. Also got it so the buttons write properly to the database. Next step is converting this to one big function, so I can refresh the whole app with ease when new items are added. Maybe not the most efficient thing ever, but hey, it works. A lot of code cleanup is needed, and also I need to figure out text wrapping in the grid layout. Remove Items button needs functionality. Need a settings dropdown.
 

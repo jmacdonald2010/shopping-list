@@ -216,6 +216,19 @@ class MainScreen(Screen, GridLayout):
 
     def toggle_test_func(self, id):
         print(id)
+
+    def remove_collected_items(self):
+        query = conn.execute('DELETE FROM items WHERE collected = 1;')
+        conn.commit()
+        print('deleted collected entries')
+        # now delete the accordion items that are currently present so we can rebild them
+        self.refresh_main_screen()
+
+
+    def refresh_main_screen(self):
+        for accordion in self.shopping_list.children[0:]:
+            self.shopping_list.remove_widget(accordion)
+        self.build_accordions()
         
     '''def test_func(self):
         print('test func ran')'''
