@@ -1,5 +1,8 @@
 for commits to the in-progress branch
 
+02/15/2021 21:54
+Working on getting the add item button on the add item screen to refresh the accordions on the main screen without requiring the user to manually do this on their own. Sort of struggling here, I know there's a way to do it but I'm not sure the best way to do so, and I don't know how I feel about rewriting a ton of code to make it work, which I'm afraid it may use. On another note, updated the add item screen to grid layout. Doesn't look fantastic, and I still need to add a recently added items part to the bottom of that screen, but hey, it's progress.
+
 02/15/2021 16:18
 The remove collected items button works now; it refreshes the main screen (deletes all children of Accordion, then rebuilds them). Now trying to figure out how to refresh the main screen when new items are added.
 

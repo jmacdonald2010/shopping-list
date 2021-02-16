@@ -107,12 +107,15 @@ class MainScreen(Screen, GridLayout):
     other_table = ObjectProperty(None)
     other_grid = ObjectProperty(None)
     shopping_list = ObjectProperty(None)
+    #add_items = AddItems()
 
 
     def __init__(self, **kwargs):
         super(MainScreen, self).__init__(**kwargs)
 
         self.build_accordions()
+        self.app = App.get_running_app()
+        # self.main_screen = self.app.main_screen
         
 
     def build_accordions(self, **kwargs):
@@ -229,7 +232,7 @@ class MainScreen(Screen, GridLayout):
         for accordion in self.shopping_list.children[0:]:
             self.shopping_list.remove_widget(accordion)
         self.build_accordions()
-        
+
     '''def test_func(self):
         print('test func ran')'''
 
@@ -241,6 +244,7 @@ class AddItems(Screen):
     item = ObjectProperty(None)
     quantity = ObjectProperty(None)
     isle = ObjectProperty(None)
+    # main_screen = MainScreen()
 
     def add_new_item(self, value):
         # creating a new object
@@ -278,6 +282,8 @@ class AddItems(Screen):
                 self.clear_inputs()
         except (NameError, sqlite3.OperationalError) as e:
             print("Please ensure that all fields are completed prior to adding the item.")
+        #main_screen.refresh_main_screen()
+
 
     def get_units(self, **kwargs):
         global units
@@ -327,6 +333,7 @@ class AddItems(Screen):
 class MainApp(App):
     def build(self):
         # return main_layout
+        main_screen = MainScreen()
         sm = ScreenManager()
         sm.add_widget(MainScreen(name='MainScreen'))
         sm.add_widget(AddItems(name='AddItems'))
