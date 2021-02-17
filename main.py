@@ -165,7 +165,7 @@ class MainScreen(Screen, GridLayout):
 
             # iterate thru the DF and create labels for them; not adding button binding functionality yet
             for row in department_dfs[id].itertuples():
-                toggles[row[6]] = ToggleButton(state=self.check_toggle_state(row[4], row[6]))
+                toggles[row[6]] = ToggleButton(state=MainScreen.check_toggle_state(row[4], row[6]))
                 department_grid.add_widget(toggles[row[6]])
                 department_grid.add_widget(Label(text=str(row[0])))
                 department_grid.add_widget(Label(text=str(row[1])))
@@ -174,7 +174,9 @@ class MainScreen(Screen, GridLayout):
                 department_grid.add_widget(Label(text=str(row[7])))
             
             # get the keys and vals in ordered lists
+            global toggles_key_list
             toggles_key_list = []
+            global toggles_val_list
             toggles_val_list = []
             for key, val in toggles.items():
                 toggles_key_list.append(key)
@@ -187,10 +189,11 @@ class MainScreen(Screen, GridLayout):
                     for key, value in toggles.items():
                         if button == value:
                             # self.toggle_id = self.produce_toggles_key_list.index(key)
-                            toggles_lambdas[key] = lambda key: self.change_toggle_state(key)
+                            toggles_lambdas[key] = lambda key: MainScreen.change_toggle_state(key)
                             button.bind(on_press= toggles_lambdas[key])
 
-    def check_toggle_state(self, state, id, **kwargs):
+    @classmethod
+    def check_toggle_state(cls, state, id, **kwargs):
         # print('toggle value changes')
         if state == True:
             # conn.execute(f'UPDATE items SET collected = True WHERE id = {id}')
@@ -201,9 +204,10 @@ class MainScreen(Screen, GridLayout):
             state = 'normal'
         return state
 
-    def change_toggle_state(self, id, **kwargs):
-        id = self.toggles_val_list.index(id)
-        id = self.toggles_key_list[id]
+    @classmethod
+    def change_toggle_state(cls, id, **kwargs):
+        id = toggles_val_list.index(id)
+        id = toggles_key_list[id]
         state = conn.execute(f'SELECT collected FROM items WHERE id = {id}')
         state = state.fetchall()
         state = state[0]
@@ -219,15 +223,13 @@ class MainScreen(Screen, GridLayout):
             state = 'down'
         return state[0]
 
-    def toggle_test_func(self, id):
-        print(id)
-
-    def remove_collected_items(self):
+    @classmethod
+    def remove_collected_items(cls):
         query = conn.execute('DELETE FROM items WHERE collected = 1;')
         conn.commit()
         print('deleted collected entries')
         # now delete the accordion items that are currently present so we can rebild them
-        MainScreen.refresh_main_screen()
+        MainScreen.refresh_main_screen(main_screen)
 
     @classmethod
     def refresh_main_screen(cls, self):

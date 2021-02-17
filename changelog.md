@@ -1,5 +1,10 @@
 for commits to the in-progress branch
 
+02/16/2021 20:58 
+The basic functionality works now. Remove collected items removes items marked as collected and refreshes the main screen. Adding and item from the AddItem page also refreshes the main screen. Clicking a toggle button updates the database appropriately. I know that the way I have done this is not the most appropriate way in the world of OOP, but it is functional, and it's not likely that I'll be creating multiple MainScreen or AddItems objects.
+
+TODO: Need to add a settings accordion, which also means I need to add a variable/object property for the # of rows in the grid layout for the accordion.
+
 02/16/2021 20:40
 Got the add items button on the add items screen to refresh the main screen. Had to convert some of my instance methods in MainScreen to class methods. Now errors are occuring in other parts of the MainScreen (eg toggle button push, remove selected items, etc.), so more of this is likely to become class methods with few instance methods (if any), which, hypothetically, shouldn't be an issue, because I will only ever have one instance of the MainScreen class.
 
