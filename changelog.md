@@ -1,5 +1,8 @@
 for commits to the in-progress branch
 
+02/16/2021 22:30
+Started building the settings accordion. Only button I have so far is the delete button, which after some testing (and redownloading the db from github a few times), works quite nicely with a popup warning. Looking to add the other settings items soon (add department, add store, select store) soon, then hopefully figure out text wrapping in a grid layout.
+
 02/16/2021 20:58 
 The basic functionality works now. Remove collected items removes items marked as collected and refreshes the main screen. Adding and item from the AddItem page also refreshes the main screen. Clicking a toggle button updates the database appropriately. I know that the way I have done this is not the most appropriate way in the world of OOP, but it is functional, and it's not likely that I'll be creating multiple MainScreen or AddItems objects.
 

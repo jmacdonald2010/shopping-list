@@ -16,6 +16,7 @@ from kivy.uix.label import Label
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.scrollview import ScrollView
 from kivy.core.window import Window
+from kivy.uix.popup import Popup
 from kivy.lang import Builder
 from kivy.properties import ObjectProperty
 import pandas as pd
@@ -83,44 +84,18 @@ print('database initialized')
 # Builder.load_file('main.kv') # i may not needs this line
 
 class MainScreen(Screen, GridLayout):
-    
-    produce_table = ObjectProperty(None)
-    produce_grid = ObjectProperty(None)
-    deli_bakery_table = ObjectProperty(None)
-    deli_bakery_grid = ObjectProperty(None)
-    meat_table = ObjectProperty(None)
-    meat_grid = ObjectProperty(None)
-    grocery_table = ObjectProperty(None)
-    grocery_grid = ObjectProperty(None)
-    beer_wine_table = ObjectProperty(None)
-    beer_wine_grid = ObjectProperty(None)
-    liquor_table = ObjectProperty(None)
-    liquor_grid = ObjectProperty(None)
-    dairy_table = ObjectProperty(None)
-    dairy_grid = ObjectProperty(None)
-    frozen_table = ObjectProperty(None)
-    frozen_grid = ObjectProperty(None)
-    pharmacy_table = ObjectProperty(None)
-    pharmacy_grid = ObjectProperty(None)
-    electronics_table = ObjectProperty(None)
-    electronics_grid = ObjectProperty(None)
-    other_table = ObjectProperty(None)
-    other_grid = ObjectProperty(None)
+    # allows us to add accordion items to the Accordion in the main.kv file.
     shopping_list = ObjectProperty(None)
-    #add_items = AddItems()
 
 
     def __init__(self, **kwargs):
         super(MainScreen, self).__init__(**kwargs)
-
+        # build the main screen; is its own function since we call on it while the app is still running.
         MainScreen.build_accordions(self)
-        # self.app = App.get_running_app()
-        # self.main_screen = self.app.main_screen
         
     @classmethod
     def build_accordions(cls, self, **kwargs):
-        # shopping_list = ObjectProperty(MainScreen)
-
+        # create lists of the departments
         departments = []
         department_ids =[]
         departments_q = conn.execute('SELECT * FROM departments;')
@@ -131,6 +106,7 @@ class MainScreen(Screen, GridLayout):
             department_ids.append(department_id)
             departments.append(department_name)
         
+        # declare for later
         toggles = dict()
 
         # dict for unit labels
@@ -141,7 +117,6 @@ class MainScreen(Screen, GridLayout):
             unit_id = unit[0]
             unit_name = unit[1]
             unit_dict[unit_id] = unit_name
-
 
         # build the accordion items to the main screen
         department_dfs = dict()
@@ -181,9 +156,9 @@ class MainScreen(Screen, GridLayout):
             for key, val in toggles.items():
                 toggles_key_list.append(key)
                 toggles_val_list.append(val)
-        
+
+            # add functionality to the toggle buttons
             toggles_lambdas = dict()
-            # if self.produce_accordion_toggles_bound == False:
             for button in department_grid.children[1:]:
                 if isinstance(button, ToggleButton):
                     for key, value in toggles.items():
@@ -191,6 +166,50 @@ class MainScreen(Screen, GridLayout):
                             # self.toggle_id = self.produce_toggles_key_list.index(key)
                             toggles_lambdas[key] = lambda key: MainScreen.change_toggle_state(key)
                             button.bind(on_press= toggles_lambdas[key])
+        
+        # add a settings accordion item
+        settings_accordion = AccordionItem(orientation='vertical', title='Settings')
+        # create the grid for the accordion item
+        settings_grid = GridLayout(cols=1, padding = [.1, .1, .1, .1])
+        # add the accordion item to the accordion, then add the grid to that accordion item
+        self.shopping_list.add_widget(settings_accordion)
+        settings_accordion.add_widget(settings_grid)
+        
+        # add buttons to the settings menu
+        # first, the delete all items button
+        delete_all_items = Button(text='Delete All Items')
+
+        # create a popup item for the above button
+        global delete_popup
+        delete_popup = Popup(title='Delete All Items',size_hint=(None,None), size=(400,400))
+
+        # create a grid layout for the delete popup, add the grid to the popup
+        delete_grid = GridLayout(cols=1, padding=[.2, .2, .2, .2])
+        delete_popup.add_widget(delete_grid)
+
+        # add 'are you sure?' delete all items button to the popup grid
+        you_sure_delete = Button(text="Are you Sure? This is irreversable! This will delete items from ALL stores!")
+        you_sure_delete.bind(on_press= lambda x2: MainScreen.delete_all_items_func(self))
+        delete_grid.add_widget(you_sure_delete)
+
+        # add a cancel button as well
+        cancel_delete = Button(text="Cancel")
+        cancel_delete.bind(on_press= lambda xx: delete_popup.dismiss())
+        delete_grid.add_widget(cancel_delete)
+
+        # bind the opening of the popup to the button
+        delete_all_items.bind(on_press= lambda x: delete_popup.open())
+        # add the delete button to the settings grid
+        settings_grid.add_widget(delete_all_items)
+
+    @classmethod
+    def delete_all_items_func(cls, self, **kwargs):
+        conn.execute('DELETE FROM items;')
+        conn.commit()
+        print('Items table content deleted')
+        delete_popup.dismiss()
+        MainScreen.refresh_main_screen(self)
+        # return True
 
     @classmethod
     def check_toggle_state(cls, state, id, **kwargs):
