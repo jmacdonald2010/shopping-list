@@ -113,37 +113,39 @@ class MainScreen(Screen, GridLayout):
     def __init__(self, **kwargs):
         super(MainScreen, self).__init__(**kwargs)
 
-        self.build_accordions()
-        self.app = App.get_running_app()
+        MainScreen.build_accordions(self)
+        # self.app = App.get_running_app()
         # self.main_screen = self.app.main_screen
         
+    @classmethod
+    def build_accordions(cls, self, **kwargs):
+        # shopping_list = ObjectProperty(MainScreen)
 
-    def build_accordions(self, **kwargs):
-        self.departments = []
-        self.department_ids =[]
-        departments = conn.execute('SELECT * FROM departments;')
-        departments = departments.fetchall()
-        for department in departments:
+        departments = []
+        department_ids =[]
+        departments_q = conn.execute('SELECT * FROM departments;')
+        departments_q = departments_q.fetchall()
+        for department in departments_q:
             department_id = department[0]
             department_name = department[1]
-            self.department_ids.append(department_id)
-            self.departments.append(department_name)
+            department_ids.append(department_id)
+            departments.append(department_name)
         
-        self.toggles = dict()
+        toggles = dict()
 
         # dict for unit labels
-        self.unit_dict = dict()
-        self.units = conn.execute('SELECT * FROM units;')
-        self.units = self.units.fetchall()
-        for unit in self.units:
+        unit_dict = dict()
+        units = conn.execute('SELECT * FROM units;')
+        units = units.fetchall()
+        for unit in units:
             unit_id = unit[0]
             unit_name = unit[1]
-            self.unit_dict[unit_id] = unit_name
+            unit_dict[unit_id] = unit_name
 
 
         # build the accordion items to the main screen
-        self.department_dfs = dict()
-        for department, id in zip(self.departments, self.department_ids):
+        department_dfs = dict()
+        for department, id in zip(departments, department_ids):
             # create the accordion item
             department_accordion = AccordionItem(orientation='vertical', title=department)
             department_grid = GridLayout(cols=6)
@@ -159,34 +161,34 @@ class MainScreen(Screen, GridLayout):
             department_grid.add_widget(Label(text="DateTime Added"))
 
             # now get the data from the db
-            self.department_dfs[id] = pd.read_sql(f'SELECT name, quantity, unit_id, isle, collected, store_id, id, time_created FROM items WHERE department_id = {id};', conn, index_col='name')
+            department_dfs[id] = pd.read_sql(f'SELECT name, quantity, unit_id, isle, collected, store_id, id, time_created FROM items WHERE department_id = {id};', conn, index_col='name')
 
             # iterate thru the DF and create labels for them; not adding button binding functionality yet
-            for row in self.department_dfs[id].itertuples():
-                self.toggles[row[6]] = ToggleButton(state=self.check_toggle_state(row[4], row[6]))
-                department_grid.add_widget(self.toggles[row[6]])
+            for row in department_dfs[id].itertuples():
+                toggles[row[6]] = ToggleButton(state=self.check_toggle_state(row[4], row[6]))
+                department_grid.add_widget(toggles[row[6]])
                 department_grid.add_widget(Label(text=str(row[0])))
                 department_grid.add_widget(Label(text=str(row[1])))
-                department_grid.add_widget(Label(text=self.unit_dict[row[2]]))
+                department_grid.add_widget(Label(text=unit_dict[row[2]]))
                 department_grid.add_widget(Label(text=str(row[3])))
                 department_grid.add_widget(Label(text=str(row[7])))
             
             # get the keys and vals in ordered lists
-            self.toggles_key_list = []
-            self.toggles_val_list = []
-            for key, val in self.toggles.items():
-                self.toggles_key_list.append(key)
-                self.toggles_val_list.append(val)
+            toggles_key_list = []
+            toggles_val_list = []
+            for key, val in toggles.items():
+                toggles_key_list.append(key)
+                toggles_val_list.append(val)
         
-            self.toggles_lambdas = dict()
+            toggles_lambdas = dict()
             # if self.produce_accordion_toggles_bound == False:
             for button in department_grid.children[1:]:
                 if isinstance(button, ToggleButton):
-                    for key, value in self.toggles.items():
+                    for key, value in toggles.items():
                         if button == value:
                             # self.toggle_id = self.produce_toggles_key_list.index(key)
-                            self.toggles_lambdas[key] = lambda key: self.change_toggle_state(key)
-                            button.bind(on_press= self.toggles_lambdas[key])
+                            toggles_lambdas[key] = lambda key: self.change_toggle_state(key)
+                            button.bind(on_press= toggles_lambdas[key])
 
     def check_toggle_state(self, state, id, **kwargs):
         # print('toggle value changes')
@@ -225,13 +227,13 @@ class MainScreen(Screen, GridLayout):
         conn.commit()
         print('deleted collected entries')
         # now delete the accordion items that are currently present so we can rebild them
-        self.refresh_main_screen()
+        MainScreen.refresh_main_screen()
 
-
-    def refresh_main_screen(self):
+    @classmethod
+    def refresh_main_screen(cls, self):
         for accordion in self.shopping_list.children[0:]:
             self.shopping_list.remove_widget(accordion)
-        self.build_accordions()
+        MainScreen.build_accordions(self)
 
     '''def test_func(self):
         print('test func ran')'''
@@ -282,7 +284,7 @@ class AddItems(Screen):
                 self.clear_inputs()
         except (NameError, sqlite3.OperationalError) as e:
             print("Please ensure that all fields are completed prior to adding the item.")
-        #main_screen.refresh_main_screen()
+        MainScreen.refresh_main_screen(main_screen)
 
 
     def get_units(self, **kwargs):
@@ -333,10 +335,12 @@ class AddItems(Screen):
 class MainApp(App):
     def build(self):
         # return main_layout
-        main_screen = MainScreen()
+        global main_screen
+        main_screen = MainScreen(name='MainScreen')
+        add_items = AddItems(name='AddItems')
         sm = ScreenManager()
-        sm.add_widget(MainScreen(name='MainScreen'))
-        sm.add_widget(AddItems(name='AddItems'))
+        sm.add_widget(main_screen)
+        sm.add_widget(add_items)
         return sm
 
 # code to add item should be like

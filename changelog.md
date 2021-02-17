@@ -1,5 +1,8 @@
 for commits to the in-progress branch
 
+02/16/2021 20:40
+Got the add items button on the add items screen to refresh the main screen. Had to convert some of my instance methods in MainScreen to class methods. Now errors are occuring in other parts of the MainScreen (eg toggle button push, remove selected items, etc.), so more of this is likely to become class methods with few instance methods (if any), which, hypothetically, shouldn't be an issue, because I will only ever have one instance of the MainScreen class.
+
 02/15/2021 21:54
 Working on getting the add item button on the add item screen to refresh the accordions on the main screen without requiring the user to manually do this on their own. Sort of struggling here, I know there's a way to do it but I'm not sure the best way to do so, and I don't know how I feel about rewriting a ton of code to make it work, which I'm afraid it may use. On another note, updated the add item screen to grid layout. Doesn't look fantastic, and I still need to add a recently added items part to the bottom of that screen, but hey, it's progress.
 
