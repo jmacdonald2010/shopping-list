@@ -1,0 +1,106 @@
+<MainScreen>
+    shopping_list: shopping_list
+    # main_screen: main_screen
+    #do_scroll_x: False
+    #do_scroll_y: True
+    # size_hint: (None, 1)
+    size: (self.width, self.height)
+    GridLayout:
+        rows: 2
+        GridLayout:
+            cols: 2
+            Button:
+                text: 'Add Item'
+                # size_hint: (1, .15)
+                # pos_hint: {'x': 0, 'y': 1}
+                on_press: root.manager.current = 'AddItems'
+            Button:
+                text: 'Remove Collected Items'
+                on_press: root.remove_collected_items() # may cause problems
+                # size_hint: (1, .1)
+                # pos_hint: {'x': .2, 'y': 1}
+        GridLayout:
+            cols: 1
+            rows: 11
+            # width: self.width
+            # height: self.height
+            # orientation: 'tb-lr'
+            ScrollView:
+                size_hint: (1, .9)
+                # height: 40
+                do_scroll_x: False
+                do_scroll_y: True
+                # height: self.minimum_height
+                Accordion:
+                    size_hint_y: None
+                    id: shopping_list
+                    orientation: 'vertical'
+                    height: 900
+
+<AddItems>
+    unit: Unit
+    department: Department
+    store: Store
+    item: Item
+    quantity: Quantity
+    isle: Isle
+    GridLayout:
+        cols: 1 
+        rows: 4
+        GridLayout:
+            cols: 2
+            Button:
+                text: '+ Add Item'
+                size: (1, .5)
+                on_press: 
+                    root.write_to_db()
+                    # MainScreen.refresh_main_screen()
+                # on_release: root.clear_inputs([Item, Quantity, Isle])
+            Button:
+                text: 'Back to Shopping List'
+                on_press: root.manager.current = 'MainScreen'
+        GridLayout:
+            cols: 1
+            TextInput:
+                id: Item
+                multiline: False
+                hint_text: 'Item'
+                on_text: root.add_new_item(self.text)
+        GridLayout:
+            cols:2
+            TextInput:
+                id: Quantity
+                multiline: False
+                hint_text: 'Quantity (default is 0)'
+                input_filter: 'float'
+                on_text: root.update_item_value('Quantity', self.text)
+            Spinner:
+                id: Unit
+                size_hint: None, 150
+                # size: 200, 150
+                text: 'Units'
+                values: root.get_units()
+                on_text: root.update_item_value('Unit', self.text)
+        GridLayout:
+            cols: 3
+            Spinner:
+                id: Department
+                size_hint: None, 150
+                # size: 100, 44
+                text: 'Department'
+                values: root.pop_department_spinner()
+                on_text: root.update_item_value('Department', self.text)
+            TextInput:
+                id: Isle
+                multiline: False
+                hint_text: 'Isle'
+                on_text: root.update_item_value('Isle', self.text)
+            Spinner:
+                id: Store
+                size_hint: None, 150
+                # size: 100, 44
+                text: 'Store'
+                values: root.pop_store_spinner()
+                on_text: root.update_item_value('Store', self.text)
+            
+
