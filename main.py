@@ -170,7 +170,7 @@ class MainScreen(Screen, GridLayout):
         # add a settings accordion item
         settings_accordion = AccordionItem(orientation='vertical', title='Settings')
         # create the grid for the accordion item
-        settings_grid = GridLayout(cols=1, padding = [.1, .1, .1, .1])
+        settings_grid = GridLayout(cols=1, padding = [1, 1, 1, 1])
         # add the accordion item to the accordion, then add the grid to that accordion item
         self.shopping_list.add_widget(settings_accordion)
         settings_accordion.add_widget(settings_grid)
@@ -202,6 +202,27 @@ class MainScreen(Screen, GridLayout):
         # add the delete button to the settings grid
         settings_grid.add_widget(delete_all_items)
 
+        # add an add store button
+        add_store = Button(text='Add Store') # launches the popup
+        global add_store_popup
+        add_store_popup = Popup(title='Add Store (REQUIRES RELAUNCH TO REFLECT CHANGES)', size_hint=(None, None), size=(400, 400)) # is the popup
+        add_store_grid = GridLayout(cols=1, padding=[.2, .2, .2, .2]) # grid layout for popup
+        add_store_popup.add_widget(add_store_grid)
+        add_store_text = TextInput(hint_text='Type Store Name Here', multiline=False) # text input for stores
+        add_store_text.bind(on_text= lambda asct: MainScreen.add_store_func(self, 0))
+        add_store_grid.add_widget(add_store_text)
+        add_store_button = Button(text='Add Store')
+        add_store_button.bind(on_press= lambda ast: MainScreen.add_store_func(self, add_store_text.text, 1))
+        add_store_grid.add_widget(add_store_button)
+        add_store_cancel = Button(text="Cancel") # cancel button for popup
+        add_store_cancel.bind(on_press= lambda asc: add_store_popup.dismiss())
+        add_store_grid.add_widget(add_store_cancel)
+        # add_store_grid.add_widget(add_store_cancel)
+        add_store.bind(on_press= lambda asb: add_store_popup.open())
+        settings_grid.add_widget(add_store)
+        
+
+
     @classmethod
     def delete_all_items_func(cls, self, **kwargs):
         conn.execute('DELETE FROM items;')
@@ -210,6 +231,18 @@ class MainScreen(Screen, GridLayout):
         delete_popup.dismiss()
         MainScreen.refresh_main_screen(self)
         # return True
+
+    @classmethod
+    def add_store_func(cls, self, text, execute, **kwargs):
+        global new_store_name
+        new_store_name = text
+        if execute == 1:
+            conn.execute(f'INSERT INTO stores (store_name) VALUES ("{new_store_name}"); ')
+            conn.commit()
+            print("Added store to database")
+            add_store_popup.dismiss()
+            execute = 0
+            MainScreen.refresh_main_screen(self)
 
     @classmethod
     def check_toggle_state(cls, state, id, **kwargs):

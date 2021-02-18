@@ -1,5 +1,8 @@
 for commits to the in-progress branch
 
+02/17/2021 19:43
+Added the add store button. Unfortunately, this still requires the app to be relaunched in order for the store change to be reflected in the AddItems page. Making this a feature will likely require redoing a lot of the AddItems class to change most of its methods to class methods.
+
 02/16/2021 22:30
 Started building the settings accordion. Only button I have so far is the delete button, which after some testing (and redownloading the db from github a few times), works quite nicely with a popup warning. Looking to add the other settings items soon (add department, add store, select store) soon, then hopefully figure out text wrapping in a grid layout.
 
