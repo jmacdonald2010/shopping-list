@@ -1,5 +1,8 @@
 for commits to the in-progress branch
 
+02/17/2021 20:55
+Dataframes are now sorted and displayed by isle #.
+
 02/17/2021 20:37
 Added the add department button. At this time, in order for the changes made in settings to be reflected, the app needs to be relaunched. The same applies to the add store button.
 

@@ -138,6 +138,8 @@ class MainScreen(Screen, GridLayout):
             # now get the data from the db
             department_dfs[id] = pd.read_sql(f'SELECT name, quantity, unit_id, isle, collected, store_id, id, time_created FROM items WHERE department_id = {id};', conn, index_col='name')
 
+            department_dfs[id] = department_dfs[id].sort_values('isle')
+
             # iterate thru the DF and create labels for them; not adding button binding functionality yet
             for row in department_dfs[id].itertuples():
                 toggles[row[6]] = ToggleButton(state=MainScreen.check_toggle_state(row[4], row[6]))
