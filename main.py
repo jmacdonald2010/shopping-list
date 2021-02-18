@@ -166,7 +166,8 @@ class MainScreen(Screen, GridLayout):
                             # self.toggle_id = self.produce_toggles_key_list.index(key)
                             toggles_lambdas[key] = lambda key: MainScreen.change_toggle_state(key)
                             button.bind(on_press= toggles_lambdas[key])
-        
+        #  <<<<<<<<<<<<<<<< Settings Menu >>>>>>>>>>>>>>>>>>
+
         # add a settings accordion item
         settings_accordion = AccordionItem(orientation='vertical', title='Settings')
         # create the grid for the accordion item
@@ -175,6 +176,7 @@ class MainScreen(Screen, GridLayout):
         self.shopping_list.add_widget(settings_accordion)
         settings_accordion.add_widget(settings_grid)
         
+        #  <<<<<<<<<<<<<<<< Delete Button >>>>>>>>>>>>>>>>>>
         # add buttons to the settings menu
         # first, the delete all items button
         delete_all_items = Button(text='Delete All Items')
@@ -202,6 +204,8 @@ class MainScreen(Screen, GridLayout):
         # add the delete button to the settings grid
         settings_grid.add_widget(delete_all_items)
 
+        #  <<<<<<<<<<<<<<<< Add Store Button >>>>>>>>>>>>>>>>>>
+
         # add an add store button
         add_store = Button(text='Add Store') # launches the popup
         global add_store_popup
@@ -220,6 +224,24 @@ class MainScreen(Screen, GridLayout):
         # add_store_grid.add_widget(add_store_cancel)
         add_store.bind(on_press= lambda asb: add_store_popup.open())
         settings_grid.add_widget(add_store)
+
+        #  <<<<<<<<<<<<<<<< Add Departments >>>>>>>>>>>>>>>>>>
+        add_department = Button(text='Add Department') # define button in settings grid
+        global add_department_popup
+        add_department_popup = Popup(title='Add Department (REQUIRES RELAUNCH TO REFLECT CHANGES)', size_hint=(None, None), size=(400, 400)) # define popup from add_department
+        add_department_grid = GridLayout(cols=1, padding=[.2, .2, .2, .2]) # define grid to add to the popup
+        add_department_popup.add_widget(add_department_grid) # add grid to popup
+        add_department_text = TextInput(hint_text='Type Department Name Here', multiline=False) # text entry box for the grid
+        add_department_text.bind(on_text= lambda adt: MainScreen.add_department_func(self, 0)) # bind the function to the text entry
+        add_department_grid.add_widget(add_department_text) # add text entry to the grid
+        add_department_button = Button(text='Add Department') # button to add text to db, will be added to grid
+        add_department_button.bind(on_press= lambda adb: MainScreen.add_department_func(self, add_department_text.text, 1)) # binds function to button
+        add_department_grid.add_widget(add_department_button)
+        add_department_cancel = Button(text='Cancel')
+        add_department_cancel.bind(on_press= lambda adc: add_department_popup.dismiss())
+        add_department_grid.add_widget(add_department_cancel)
+        add_department.bind(on_press= lambda add: add_department_popup.open())
+        settings_grid.add_widget(add_department)
         
 
 
@@ -240,6 +262,18 @@ class MainScreen(Screen, GridLayout):
             conn.execute(f'INSERT INTO stores (store_name) VALUES ("{new_store_name}"); ')
             conn.commit()
             print("Added store to database")
+            add_store_popup.dismiss()
+            execute = 0
+            MainScreen.refresh_main_screen(self)
+
+    @classmethod
+    def add_department_func(cls, self, text, execute, **kwargs):
+        global new_department_name
+        new_department_name = text
+        if execute == 1:
+            conn.execute(f'INSERT INTO departments (department_name) VALUES ("{new_department_name}"); ')
+            conn.commit()
+            print("Added department to database")
             add_store_popup.dismiss()
             execute = 0
             MainScreen.refresh_main_screen(self)

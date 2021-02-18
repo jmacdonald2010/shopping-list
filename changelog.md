@@ -1,5 +1,8 @@
 for commits to the in-progress branch
 
+02/17/2021 20:37
+Added the add department button. At this time, in order for the changes made in settings to be reflected, the app needs to be relaunched. The same applies to the add store button.
+
 02/17/2021 19:43
 Added the add store button. Unfortunately, this still requires the app to be relaunched in order for the store change to be reflected in the AddItems page. Making this a feature will likely require redoing a lot of the AddItems class to change most of its methods to class methods.
 
