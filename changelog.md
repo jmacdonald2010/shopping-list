@@ -1,5 +1,8 @@
 for commits to the in-progress branch
 
+02/19/2021 22:44
+Added a select store spinner, currently it only prints to the console and refreshes the main screen when a new store is selected, but from here it should be somewhat straight-ahead to add the filtering based on stores. Close to having a working base version to compile to iOS.
+
 02/17/2021 20:55
 Dataframes are now sorted and displayed by isle #.
 

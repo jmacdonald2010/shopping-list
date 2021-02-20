@@ -245,7 +245,34 @@ class MainScreen(Screen, GridLayout):
         add_department.bind(on_press= lambda add: add_department_popup.open())
         settings_grid.add_widget(add_department)
         
+        # <<<<<<<<<< Change Store Spinner >>>>>>>>>>>>>>
+        change_store = Button(text='Select Store')
+        global change_store_popup
+        change_store_popup = Popup(title='Select Store', size_hint=(None, None), size=(400,200))
+        change_store_spinner = Spinner(text='Store',size=(100, 50), values=MainScreen.pop_current_store_spinner(self)) 
+        change_store_spinner.bind(text=lambda change_store_spinner, css: MainScreen.change_store_spinner_func(self,change_store_spinner.text))
+        change_store_popup.add_widget(change_store_spinner)
+        change_store.bind(on_press= lambda csb: change_store_popup.open())
+        settings_grid.add_widget(change_store)
 
+    @classmethod
+    def pop_current_store_spinner(cls, self, **kwargs):
+        stores_list_q = conn.execute('SELECT store_name FROM stores;')
+        stores_list_q = stores_list_q.fetchall()
+        global stores_list
+        stores_list = []
+        for store in stores_list_q:
+            stores_list.append(store[0])
+        return stores_list
+    
+    @classmethod
+    def change_store_spinner_func(cls, self, store, **kwargs):
+        global current_store
+        current_store = store
+        print(current_store)
+        change_store_popup.dismiss()
+        MainScreen.refresh_main_screen(self)
+        # return self
 
     @classmethod
     def delete_all_items_func(cls, self, **kwargs):
