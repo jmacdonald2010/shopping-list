@@ -111,6 +111,7 @@ class MainScreen(Screen, GridLayout):
         # create dict of stores and their ids
         global current_store
         global stores_dict_init
+        global stores_dict
         try:
             if stores_dict_init == 1:
                 pass
@@ -156,7 +157,7 @@ class MainScreen(Screen, GridLayout):
             department_grid.add_widget(Label(text="DateTime Added"))
 
             # now get the data from the db
-            department_dfs[id] = pd.read_sql(f'SELECT name, quantity, unit_id, isle, collected, store_id, id, time_created FROM items WHERE department_id = {id};', conn, index_col='name')
+            department_dfs[id] = pd.read_sql(f'SELECT name, quantity, unit_id, isle, collected, store_id, id, time_created FROM items WHERE department_id = {id} AND store_id = {stores_dict[current_store]};', conn, index_col='name')
 
             department_dfs[id] = department_dfs[id].sort_values('isle')
 
@@ -287,7 +288,7 @@ class MainScreen(Screen, GridLayout):
     
     @classmethod
     def change_store_spinner_func(cls, self, store, **kwargs):
-        # global current_store
+        global current_store
         current_store = store
         print(current_store)
         change_store_popup.dismiss()

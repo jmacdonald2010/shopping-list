@@ -1,5 +1,8 @@
 for commits to the in-progress branch
 
+02/20/2021 10:33
+Current store spinner is now working and filtering the database appropriately. 
+
 02/20/2021 10:20
 Changed the current store variable to a global, added a dict of store names as keys and their id's in the database as values, so the next step is using that to filter what populates the accordions. Commit/push in case something breaks.
 
