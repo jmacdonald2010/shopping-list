@@ -91,7 +91,9 @@ class MainScreen(Screen, GridLayout):
     def __init__(self, **kwargs):
         super(MainScreen, self).__init__(**kwargs)
         # build the main screen; is its own function since we call on it while the app is still running.
+        # stores_dict_init = 0
         MainScreen.build_accordions(self)
+
         
     @classmethod
     def build_accordions(cls, self, **kwargs):
@@ -106,6 +108,24 @@ class MainScreen(Screen, GridLayout):
             department_ids.append(department_id)
             departments.append(department_name)
         
+        # create dict of stores and their ids
+        global current_store
+        global stores_dict_init
+        try:
+            if stores_dict_init == 1:
+                pass
+        except NameError:
+            stores_dict = dict()
+            stores_dict_q = conn.execute('SELECT store_name, store_id FROM stores;')
+            stores_dict_q = stores_dict_q.fetchall()
+            for store in stores_dict_q:
+                stores_dict[store[0]] = store[1]
+                if store[1] == 1:
+                    current_store = store[0]
+            stores_dict_init = 1
+
+        # current_store = 
+
         # declare for later
         toggles = dict()
 
@@ -267,7 +287,7 @@ class MainScreen(Screen, GridLayout):
     
     @classmethod
     def change_store_spinner_func(cls, self, store, **kwargs):
-        global current_store
+        # global current_store
         current_store = store
         print(current_store)
         change_store_popup.dismiss()

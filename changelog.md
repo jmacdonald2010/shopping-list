@@ -1,5 +1,8 @@
 for commits to the in-progress branch
 
+02/20/2021 10:20
+Changed the current store variable to a global, added a dict of store names as keys and their id's in the database as values, so the next step is using that to filter what populates the accordions. Commit/push in case something breaks.
+
 02/19/2021 22:44
 Added a select store spinner, currently it only prints to the console and refreshes the main screen when a new store is selected, but from here it should be somewhat straight-ahead to add the filtering based on stores. Close to having a working base version to compile to iOS.
 
