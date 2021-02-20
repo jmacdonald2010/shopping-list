@@ -1,5 +1,26 @@
 for commits to the in-progress branch
 
+02/20/2021 10:33
+Current store spinner is now working and filtering the database appropriately. 
+
+02/20/2021 10:20
+Changed the current store variable to a global, added a dict of store names as keys and their id's in the database as values, so the next step is using that to filter what populates the accordions. Commit/push in case something breaks.
+
+02/19/2021 22:44
+Added a select store spinner, currently it only prints to the console and refreshes the main screen when a new store is selected, but from here it should be somewhat straight-ahead to add the filtering based on stores. Close to having a working base version to compile to iOS.
+
+02/17/2021 20:55
+Dataframes are now sorted and displayed by isle #.
+
+02/17/2021 20:37
+Added the add department button. At this time, in order for the changes made in settings to be reflected, the app needs to be relaunched. The same applies to the add store button.
+
+02/17/2021 19:43
+Added the add store button. Unfortunately, this still requires the app to be relaunched in order for the store change to be reflected in the AddItems page. Making this a feature will likely require redoing a lot of the AddItems class to change most of its methods to class methods.
+
+02/16/2021 22:30
+Started building the settings accordion. Only button I have so far is the delete button, which after some testing (and redownloading the db from github a few times), works quite nicely with a popup warning. Looking to add the other settings items soon (add department, add store, select store) soon, then hopefully figure out text wrapping in a grid layout.
+
 02/16/2021 20:58 
 The basic functionality works now. Remove collected items removes items marked as collected and refreshes the main screen. Adding and item from the AddItem page also refreshes the main screen. Clicking a toggle button updates the database appropriately. I know that the way I have done this is not the most appropriate way in the world of OOP, but it is functional, and it's not likely that I'll be creating multiple MainScreen or AddItems objects.
 

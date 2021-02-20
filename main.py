@@ -16,6 +16,7 @@ from kivy.uix.label import Label
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.scrollview import ScrollView
 from kivy.core.window import Window
+from kivy.uix.popup import Popup
 from kivy.lang import Builder
 from kivy.properties import ObjectProperty
 import pandas as pd
@@ -83,44 +84,20 @@ print('database initialized')
 # Builder.load_file('main.kv') # i may not needs this line
 
 class MainScreen(Screen, GridLayout):
-    
-    produce_table = ObjectProperty(None)
-    produce_grid = ObjectProperty(None)
-    deli_bakery_table = ObjectProperty(None)
-    deli_bakery_grid = ObjectProperty(None)
-    meat_table = ObjectProperty(None)
-    meat_grid = ObjectProperty(None)
-    grocery_table = ObjectProperty(None)
-    grocery_grid = ObjectProperty(None)
-    beer_wine_table = ObjectProperty(None)
-    beer_wine_grid = ObjectProperty(None)
-    liquor_table = ObjectProperty(None)
-    liquor_grid = ObjectProperty(None)
-    dairy_table = ObjectProperty(None)
-    dairy_grid = ObjectProperty(None)
-    frozen_table = ObjectProperty(None)
-    frozen_grid = ObjectProperty(None)
-    pharmacy_table = ObjectProperty(None)
-    pharmacy_grid = ObjectProperty(None)
-    electronics_table = ObjectProperty(None)
-    electronics_grid = ObjectProperty(None)
-    other_table = ObjectProperty(None)
-    other_grid = ObjectProperty(None)
+    # allows us to add accordion items to the Accordion in the main.kv file.
     shopping_list = ObjectProperty(None)
-    #add_items = AddItems()
 
 
     def __init__(self, **kwargs):
         super(MainScreen, self).__init__(**kwargs)
-
+        # build the main screen; is its own function since we call on it while the app is still running.
+        # stores_dict_init = 0
         MainScreen.build_accordions(self)
-        # self.app = App.get_running_app()
-        # self.main_screen = self.app.main_screen
+
         
     @classmethod
     def build_accordions(cls, self, **kwargs):
-        # shopping_list = ObjectProperty(MainScreen)
-
+        # create lists of the departments
         departments = []
         department_ids =[]
         departments_q = conn.execute('SELECT * FROM departments;')
@@ -131,6 +108,26 @@ class MainScreen(Screen, GridLayout):
             department_ids.append(department_id)
             departments.append(department_name)
         
+        # create dict of stores and their ids
+        global current_store
+        global stores_dict_init
+        global stores_dict
+        try:
+            if stores_dict_init == 1:
+                pass
+        except NameError:
+            stores_dict = dict()
+            stores_dict_q = conn.execute('SELECT store_name, store_id FROM stores;')
+            stores_dict_q = stores_dict_q.fetchall()
+            for store in stores_dict_q:
+                stores_dict[store[0]] = store[1]
+                if store[1] == 1:
+                    current_store = store[0]
+            stores_dict_init = 1
+
+        # current_store = 
+
+        # declare for later
         toggles = dict()
 
         # dict for unit labels
@@ -141,7 +138,6 @@ class MainScreen(Screen, GridLayout):
             unit_id = unit[0]
             unit_name = unit[1]
             unit_dict[unit_id] = unit_name
-
 
         # build the accordion items to the main screen
         department_dfs = dict()
@@ -161,7 +157,9 @@ class MainScreen(Screen, GridLayout):
             department_grid.add_widget(Label(text="DateTime Added"))
 
             # now get the data from the db
-            department_dfs[id] = pd.read_sql(f'SELECT name, quantity, unit_id, isle, collected, store_id, id, time_created FROM items WHERE department_id = {id};', conn, index_col='name')
+            department_dfs[id] = pd.read_sql(f'SELECT name, quantity, unit_id, isle, collected, store_id, id, time_created FROM items WHERE department_id = {id} AND store_id = {stores_dict[current_store]};', conn, index_col='name')
+
+            department_dfs[id] = department_dfs[id].sort_values('isle')
 
             # iterate thru the DF and create labels for them; not adding button binding functionality yet
             for row in department_dfs[id].itertuples():
@@ -181,9 +179,9 @@ class MainScreen(Screen, GridLayout):
             for key, val in toggles.items():
                 toggles_key_list.append(key)
                 toggles_val_list.append(val)
-        
+
+            # add functionality to the toggle buttons
             toggles_lambdas = dict()
-            # if self.produce_accordion_toggles_bound == False:
             for button in department_grid.children[1:]:
                 if isinstance(button, ToggleButton):
                     for key, value in toggles.items():
@@ -191,6 +189,144 @@ class MainScreen(Screen, GridLayout):
                             # self.toggle_id = self.produce_toggles_key_list.index(key)
                             toggles_lambdas[key] = lambda key: MainScreen.change_toggle_state(key)
                             button.bind(on_press= toggles_lambdas[key])
+        #  <<<<<<<<<<<<<<<< Settings Menu >>>>>>>>>>>>>>>>>>
+
+        # add a settings accordion item
+        settings_accordion = AccordionItem(orientation='vertical', title='Settings')
+        # create the grid for the accordion item
+        settings_grid = GridLayout(cols=1, padding = [1, 1, 1, 1])
+        # add the accordion item to the accordion, then add the grid to that accordion item
+        self.shopping_list.add_widget(settings_accordion)
+        settings_accordion.add_widget(settings_grid)
+        
+        #  <<<<<<<<<<<<<<<< Delete Button >>>>>>>>>>>>>>>>>>
+        # add buttons to the settings menu
+        # first, the delete all items button
+        delete_all_items = Button(text='Delete All Items')
+
+        # create a popup item for the above button
+        global delete_popup
+        delete_popup = Popup(title='Delete All Items',size_hint=(None,None), size=(400,400))
+
+        # create a grid layout for the delete popup, add the grid to the popup
+        delete_grid = GridLayout(cols=1, padding=[.2, .2, .2, .2])
+        delete_popup.add_widget(delete_grid)
+
+        # add 'are you sure?' delete all items button to the popup grid
+        you_sure_delete = Button(text="Are you Sure? This is irreversable! This will delete items from ALL stores!")
+        you_sure_delete.bind(on_press= lambda x2: MainScreen.delete_all_items_func(self))
+        delete_grid.add_widget(you_sure_delete)
+
+        # add a cancel button as well
+        cancel_delete = Button(text="Cancel")
+        cancel_delete.bind(on_press= lambda xx: delete_popup.dismiss())
+        delete_grid.add_widget(cancel_delete)
+
+        # bind the opening of the popup to the button
+        delete_all_items.bind(on_press= lambda x: delete_popup.open())
+        # add the delete button to the settings grid
+        settings_grid.add_widget(delete_all_items)
+
+        #  <<<<<<<<<<<<<<<< Add Store Button >>>>>>>>>>>>>>>>>>
+
+        # add an add store button
+        add_store = Button(text='Add Store') # launches the popup
+        global add_store_popup
+        add_store_popup = Popup(title='Add Store (REQUIRES RELAUNCH TO REFLECT CHANGES)', size_hint=(None, None), size=(400, 400)) # is the popup
+        add_store_grid = GridLayout(cols=1, padding=[.2, .2, .2, .2]) # grid layout for popup
+        add_store_popup.add_widget(add_store_grid)
+        add_store_text = TextInput(hint_text='Type Store Name Here', multiline=False) # text input for stores
+        add_store_text.bind(on_text= lambda asct: MainScreen.add_store_func(self, 0))
+        add_store_grid.add_widget(add_store_text)
+        add_store_button = Button(text='Add Store')
+        add_store_button.bind(on_press= lambda ast: MainScreen.add_store_func(self, add_store_text.text, 1))
+        add_store_grid.add_widget(add_store_button)
+        add_store_cancel = Button(text="Cancel") # cancel button for popup
+        add_store_cancel.bind(on_press= lambda asc: add_store_popup.dismiss())
+        add_store_grid.add_widget(add_store_cancel)
+        # add_store_grid.add_widget(add_store_cancel)
+        add_store.bind(on_press= lambda asb: add_store_popup.open())
+        settings_grid.add_widget(add_store)
+
+        #  <<<<<<<<<<<<<<<< Add Departments >>>>>>>>>>>>>>>>>>
+        add_department = Button(text='Add Department') # define button in settings grid
+        global add_department_popup
+        add_department_popup = Popup(title='Add Department (REQUIRES RELAUNCH TO REFLECT CHANGES)', size_hint=(None, None), size=(400, 400)) # define popup from add_department
+        add_department_grid = GridLayout(cols=1, padding=[.2, .2, .2, .2]) # define grid to add to the popup
+        add_department_popup.add_widget(add_department_grid) # add grid to popup
+        add_department_text = TextInput(hint_text='Type Department Name Here', multiline=False) # text entry box for the grid
+        add_department_text.bind(on_text= lambda adt: MainScreen.add_department_func(self, 0)) # bind the function to the text entry
+        add_department_grid.add_widget(add_department_text) # add text entry to the grid
+        add_department_button = Button(text='Add Department') # button to add text to db, will be added to grid
+        add_department_button.bind(on_press= lambda adb: MainScreen.add_department_func(self, add_department_text.text, 1)) # binds function to button
+        add_department_grid.add_widget(add_department_button)
+        add_department_cancel = Button(text='Cancel')
+        add_department_cancel.bind(on_press= lambda adc: add_department_popup.dismiss())
+        add_department_grid.add_widget(add_department_cancel)
+        add_department.bind(on_press= lambda add: add_department_popup.open())
+        settings_grid.add_widget(add_department)
+        
+        # <<<<<<<<<< Change Store Spinner >>>>>>>>>>>>>>
+        change_store = Button(text='Select Store')
+        global change_store_popup
+        change_store_popup = Popup(title='Select Store', size_hint=(None, None), size=(400,200))
+        change_store_spinner = Spinner(text='Store',size=(100, 50), values=MainScreen.pop_current_store_spinner(self)) 
+        change_store_spinner.bind(text=lambda change_store_spinner, css: MainScreen.change_store_spinner_func(self,change_store_spinner.text))
+        change_store_popup.add_widget(change_store_spinner)
+        change_store.bind(on_press= lambda csb: change_store_popup.open())
+        settings_grid.add_widget(change_store)
+
+    @classmethod
+    def pop_current_store_spinner(cls, self, **kwargs):
+        stores_list_q = conn.execute('SELECT store_name FROM stores;')
+        stores_list_q = stores_list_q.fetchall()
+        global stores_list
+        stores_list = []
+        for store in stores_list_q:
+            stores_list.append(store[0])
+        return stores_list
+    
+    @classmethod
+    def change_store_spinner_func(cls, self, store, **kwargs):
+        global current_store
+        current_store = store
+        print(current_store)
+        change_store_popup.dismiss()
+        MainScreen.refresh_main_screen(self)
+        # return self
+
+    @classmethod
+    def delete_all_items_func(cls, self, **kwargs):
+        conn.execute('DELETE FROM items;')
+        conn.commit()
+        print('Items table content deleted')
+        delete_popup.dismiss()
+        MainScreen.refresh_main_screen(self)
+        # return True
+
+    @classmethod
+    def add_store_func(cls, self, text, execute, **kwargs):
+        global new_store_name
+        new_store_name = text
+        if execute == 1:
+            conn.execute(f'INSERT INTO stores (store_name) VALUES ("{new_store_name}"); ')
+            conn.commit()
+            print("Added store to database")
+            add_store_popup.dismiss()
+            execute = 0
+            MainScreen.refresh_main_screen(self)
+
+    @classmethod
+    def add_department_func(cls, self, text, execute, **kwargs):
+        global new_department_name
+        new_department_name = text
+        if execute == 1:
+            conn.execute(f'INSERT INTO departments (department_name) VALUES ("{new_department_name}"); ')
+            conn.commit()
+            print("Added department to database")
+            add_store_popup.dismiss()
+            execute = 0
+            MainScreen.refresh_main_screen(self)
 
     @classmethod
     def check_toggle_state(cls, state, id, **kwargs):
