@@ -1,5 +1,8 @@
 for commits to the in-progress branch
 
+02/22/2021 20:43
+Added text wrapping to the item and datetime labels in the accordion items. Accordion size is adjusted based on the the largest number of items for a single department. Perhaps a future version will have different sized accordion items depending on the department. Next goal is to add a recently added items page to the add item page.
+
 02/20/2021 10:33
 Current store spinner is now working and filtering the database appropriately. 
 

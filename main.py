@@ -21,6 +21,7 @@ from kivy.lang import Builder
 from kivy.properties import ObjectProperty
 import pandas as pd
 import numpy as np
+# from collections import Counter
 
 # connect to db, or create if not exists
 conn = sqlite3.connect('shoppingList.db')
@@ -86,15 +87,31 @@ print('database initialized')
 class MainScreen(Screen, GridLayout):
     # allows us to add accordion items to the Accordion in the main.kv file.
     shopping_list = ObjectProperty(None)
+    # accordion_size = ObjectProperty(None)
 
 
     def __init__(self, **kwargs):
         super(MainScreen, self).__init__(**kwargs)
         # build the main screen; is its own function since we call on it while the app is still running.
         # stores_dict_init = 0
+        accordion_size = 1000
         MainScreen.build_accordions(self)
 
-        
+    @classmethod
+    def calc_accordion_size(cls, **kwargs):
+        # might just be able to start here
+        dbq = pd.read_sql('SELECT id, department_id FROM items;', conn)
+        dept_counts = dbq['department_id'].value_counts()
+        biggest_val = dept_counts.idxmax(axis=1)
+        # biggest_val = 0
+        # for key, val in item_no_dict.items():
+        #     if biggest_val == 0:
+        #         biggest_val = val
+        #     elif val > biggest_val:
+        #         biggest_val = val
+        calcd_size = dept_counts[biggest_val] * 100
+        return int(calcd_size)
+
     @classmethod
     def build_accordions(cls, self, **kwargs):
         # create lists of the departments
@@ -165,11 +182,11 @@ class MainScreen(Screen, GridLayout):
             for row in department_dfs[id].itertuples():
                 toggles[row[6]] = ToggleButton(state=MainScreen.check_toggle_state(row[4], row[6]))
                 department_grid.add_widget(toggles[row[6]])
-                department_grid.add_widget(Label(text=str(row[0])))
+                department_grid.add_widget(Label(text=str(row[0]), text_size= (self.width, None)))
                 department_grid.add_widget(Label(text=str(row[1])))
                 department_grid.add_widget(Label(text=unit_dict[row[2]]))
                 department_grid.add_widget(Label(text=str(row[3])))
-                department_grid.add_widget(Label(text=str(row[7])))
+                department_grid.add_widget(Label(text=str(row[7]), text_size= (self.width, None)))
             
             # get the keys and vals in ordered lists
             global toggles_key_list

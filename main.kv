@@ -1,5 +1,6 @@
 <MainScreen>
     shopping_list: shopping_list
+    # accordion_size: self.accordion_size
     #do_scroll_x: False
     #do_scroll_y: True
     # size_hint: (None, 1)
@@ -34,7 +35,8 @@
                     size_hint_y: None
                     id: shopping_list
                     orientation: 'vertical'
-                    height: 900
+                    height: root.calc_accordion_size()
+                    # height: 900
 
 <AddItems>
     unit: Unit
