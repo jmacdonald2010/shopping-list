@@ -45,9 +45,10 @@
     item: Item
     quantity: Quantity
     isle: Isle
+    recently_added: Recent
     GridLayout:
         cols: 1 
-        rows: 4
+        rows: 5
         GridLayout:
             cols: 2
             Button:
@@ -55,6 +56,7 @@
                 size: (1, .5)
                 on_press: 
                     root.write_to_db()
+                    root.recent_added_list()
                     # MainScreen.refresh_main_screen()
                 # on_release: root.clear_inputs([Item, Quantity, Isle])
             Button:
@@ -103,5 +105,23 @@
                 text: 'Store'
                 values: root.pop_store_spinner()
                 on_text: root.update_item_value('Store', self.text)
+        GridLayout:
+            cols: 7
+            # rows: 6
+            id: Recent
+            Label:
+                text: 'Item'
+            Label:
+                text: 'Amount'
+            Label:
+                text: 'Unit'
+            Label:
+                text: 'Department'
+            Label:
+                text: 'Isle'
+            Label:
+                text: 'Store'
+            Label:
+                text: 'DateTime added'
             
 

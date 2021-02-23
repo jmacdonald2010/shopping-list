@@ -401,7 +401,12 @@ class AddItems(Screen):
     item = ObjectProperty(None)
     quantity = ObjectProperty(None)
     isle = ObjectProperty(None)
+    recently_added = ObjectProperty(None)
     # main_screen = MainScreen()
+
+    #def __init__(self, **kwargs):
+        # self.recent_added_list()
+    #    pass
 
     def add_new_item(self, value):
         # creating a new object
@@ -485,6 +490,44 @@ class AddItems(Screen):
         self.unit.text = "Units"
         self.department.text = "Departments"
         self.store.text = "Stores"
+
+    def recent_added_list(self):
+        # assemble a dict of unit_id, department_id, and store_id
+
+        # unit_id dict; hopefully this won't be an issue w/ the MainScreen class
+        self.unit_dict_df = pd.read_sql('SELECT unit_id, unit_name FROM units;', conn)
+        self.unit_dict = dict()
+        for unit in self.unit_dict_df.itertuples():
+            self.unit_dict[unit[1]] = unit[2]
+
+        # department_id dict
+        self.department_dict_df = pd.read_sql('SELECT department_id, department_name FROM departments;', conn)
+        self.department_dict = dict()
+        for department in self.department_dict_df.itertuples():
+            self.department_dict[department[1]] = department[2]
+
+        # store_id dict
+        self.store_dict_df = pd.read_sql('SELECT store_id, store_name FROM stores;', conn)
+        self.store_dict = dict()
+        for store in self.store_dict_df.itertuples():
+            self.store_dict[store[1]] = store[2]
+
+        # assemble the items table as a pd df
+        self.recent_added_df = pd.read_sql('SELECT name, quantity, unit_id, department_id, isle, store_id, time_created FROM items;', conn)
+        self.recent_added_df = self.recent_added_df.sort_values('time_created', ascending=False)
+        # go thru the first five items, put them in the grid layout of the add item screen
+        self.count = 0
+        for item in self.recent_added_df.itertuples():
+            self.recently_added.add_widget(Label(text=str(item[1]))) # name
+            self.recently_added.add_widget(Label(text=str(item[2]))) # amt
+            self.recently_added.add_widget(Label(text=str(self.unit_dict[int(item[3])]))) # unit
+            self.recently_added.add_widget(Label(text=str(self.department_dict[item[4]]))) # department
+            self.recently_added.add_widget(Label(text=str(item[5]))) # isle
+            self.recently_added.add_widget(Label(text=str(self.store_dict[int(item[6])]))) # store
+            self.recently_added.add_widget(Label(text=str(item[7])))
+            self.count += 1
+            if self.count > 5:
+                break
             
 
 class MainApp(App):

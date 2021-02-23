@@ -1,5 +1,8 @@
 for commits to the in-progress branch
 
+02/22/2021 22:01
+Added a recently added items list to the add items screen. At this time, it does not show up when first loading the screen, but updates once an item is added (or the add item button is pressed). Need to make it show up when that screen is loaded, add text-wrapping, and adjust the grid layout so it looks better. Once that is done, I will attempt to compile to iOS. Changes will be made depending on how it runs on iPhone. Once stable, I will be taking a break from the project.
+
 02/22/2021 20:43
 Added text wrapping to the item and datetime labels in the accordion items. Accordion size is adjusted based on the the largest number of items for a single department. Perhaps a future version will have different sized accordion items depending on the department. Next goal is to add a recently added items page to the add item page.
 
