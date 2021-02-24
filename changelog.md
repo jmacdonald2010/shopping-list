@@ -1,5 +1,8 @@
 for commits to the in-progress branch
 
+02/23/2021 20:31
+Recently added items shows up when the app loads. Only issue is now every time the add items button is pressed it doesn't update, just adds more stuff. Going to implement a similar solution to what I used for the refresh accordions solution. Commit/push in case of severe error.
+
 02/22/2021 22:01
 Added a recently added items list to the add items screen. At this time, it does not show up when first loading the screen, but updates once an item is added (or the add item button is pressed). Need to make it show up when that screen is loaded, add text-wrapping, and adjust the grid layout so it looks better. Once that is done, I will attempt to compile to iOS. Changes will be made depending on how it runs on iPhone. Once stable, I will be taking a break from the project.
 
