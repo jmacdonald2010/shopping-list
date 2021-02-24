@@ -100,7 +100,7 @@
                 on_text: root.update_item_value('Isle', self.text)
             Spinner:
                 id: Store
-                size_hint: None, 150
+                size_hint: 1, 150
                 # size: 100, 44
                 text: 'Store'
                 values: root.pop_store_spinner()
@@ -108,20 +108,21 @@
         GridLayout:
             cols: 7
             # rows: 6
+            size_hint_y: 5
             id: Recent
-            Label:
-                text: 'Item'
-            Label:
-                text: 'Amount'
-            Label:
-                text: 'Unit'
-            Label:
-                text: 'Department'
-            Label:
-                text: 'Isle'
-            Label:
-                text: 'Store'
-            Label:
-                text: 'DateTime added'
+            # Label:
+            #     text: 'Item'
+            # Label:
+            #     text: 'Amount'
+            # Label:
+            #     text: 'Unit'
+            # Label:
+            #     text: 'Department'
+            # Label:
+            #     text: 'Isle'
+            # Label:
+            #     text: 'Store'
+            # Label:
+            #     text: 'DateTime added'
             
 

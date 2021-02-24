@@ -450,6 +450,7 @@ class AddItems(Screen):
         except (NameError, sqlite3.OperationalError) as e:
             print("Please ensure that all fields are completed prior to adding the item.")
         MainScreen.refresh_main_screen(main_screen)
+        AddItems.destroy_recent_added_list(self)
         AddItems.recent_added_list(self)
 
 
@@ -499,6 +500,16 @@ class AddItems(Screen):
 
     @classmethod
     def recent_added_list(cls, self):
+        # first, add the necessary labels
+        self.recently_added.add_widget(Label(text='Item'))
+        self.recently_added.add_widget(Label(text='Amount'))
+        self.recently_added.add_widget(Label(text='Unit'))
+        self.recently_added.add_widget(Label(text='Department'))
+        self.recently_added.add_widget(Label(text='Isle'))
+        self.recently_added.add_widget(Label(text='Store'))
+        self.recently_added.add_widget(Label(text='DateTime Added'))
+
+        # then, assemble dicts for the foreign keys in the db
         # assemble a dict of unit_id, department_id, and store_id
 
         # unit_id dict; hopefully this won't be an issue w/ the MainScreen class
@@ -525,16 +536,21 @@ class AddItems(Screen):
         # go thru the first five items, put them in the grid layout of the add item screen
         count = 0
         for item in recent_added_df.itertuples():
-            self.recently_added.add_widget(Label(text=str(item[1]))) # name
+            self.recently_added.add_widget(Label(text=str(item[1]), text_size=(self.width, None))) # name
             self.recently_added.add_widget(Label(text=str(item[2]))) # amt
             self.recently_added.add_widget(Label(text=str(unit_dict[int(item[3])]))) # unit
             self.recently_added.add_widget(Label(text=str(department_dict[item[4]]))) # department
             self.recently_added.add_widget(Label(text=str(item[5]))) # isle
             self.recently_added.add_widget(Label(text=str(store_dict[int(item[6])]))) # store
-            self.recently_added.add_widget(Label(text=str(item[7])))
+            self.recently_added.add_widget(Label(text=str(item[7]), text_size=(self.width, None)))
             count += 1
             if count > 5:
                 break
+
+    @classmethod
+    def destroy_recent_added_list(cls, self):
+        for label in self.recently_added.children[0:]:
+            self.recently_added.remove_widget(label)
             
 
 class MainApp(App):

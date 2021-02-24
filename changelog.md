@@ -1,5 +1,8 @@
 for commits to the in-progress branch
 
+02/23/2021 20:52
+Fixed some issues with the recently added list. Ready to begin attempting to compile to iOS. Likely will run into some formatting issues. Will address after observation.
+
 02/23/2021 20:31
 Recently added items shows up when the app loads. Only issue is now every time the add items button is pressed it doesn't update, just adds more stuff. Going to implement a similar solution to what I used for the refresh accordions solution. Commit/push in case of severe error.
 
